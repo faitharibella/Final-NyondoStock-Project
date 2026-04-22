@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NyondoStock Admin Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="Style/admin.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand text-warning" href="#">NyondoStock</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Records</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid mt-4">
+  <!-- Dashboard Overview -->
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-header">Total Products</div>
+        <div class="card-body"><h3>1,245</h3></div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-header">Total Sales</div>
+        <div class="card-body"><h3>3,560</h3></div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-header">Revenue</div>
+        <div class="card-body"><h3>$120,000</h3></div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-header">Low Stock Alerts</div>
+        <div class="card-body"><h3>12</h3></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="card">
+    <div class="card-header">Recent Activity</div>
+    <div class="card-body">
+      <ul>
+        <li>Manager added product: Hammer</li>
+        <li>Salesperson made a sale: 5x Nails</li>
+        <li>Manager updated stock: Cement</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- User Management -->
+  <div class="card">
+    <div class="card-header">User Management</div>
+    <div class="card-body">
+      <button class="btn btn-gold mb-3">
+        <a href="addnewuser.html">Add New User</a>
+      </button>
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>John Doe</td>
+            <td>Manager</td>
+            <td>Active</td>
+            <td>
+              <button class="btn btn-sm btn-gold">Edit</button>
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Jane Smith</td>
+            <td>Salesperson</td>
+            <td>Inactive</td>
+            <td>
+              <button class="btn btn-sm btn-gold">Edit</button>
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Reports & Records -->
+  <div class="card">
+    <div class="card-header">Reports & Records</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="chart-placeholder">Sales Chart</div>
+        </div>
+        <div class="col-md-6">
+          <div class="chart-placeholder">Stock Chart</div>
+        </div>
+      </div>
+      <table class="table table-dark table-striped mt-3">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Product</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2026-04-21</td>
+            <td>Manager</td>
+            <td>Hammer</td>
+            <td>Added Product</td>
+          </tr>
+          <tr>
+            <td>2026-04-22</td>
+            <td>Salesperson</td>
+            <td>Nails</td>
+            <td>Sale</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Activity Monitoring -->
+  <div class="card">
+    <div class="card-header">Activity Monitoring</div>
+    <div class="card-body">
+      <ul>
+        <li>Manager added product: Drill Machine</li>
+        <li>Salesperson made a sale: 10x Screws</li>
+        <li>Manager updated stock: Paint</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
