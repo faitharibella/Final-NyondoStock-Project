@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NyondoStock Salesperson Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Style/salesperson.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg px-3">
+      <a class="navbar-brand text-warning fw-bold" href="#">NyondoStock</a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#nav"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto gap-3">
+          <li class="nav-item">
+            <a class="nav-link" href="#products">Products</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#sales">Sales</a></li>
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-bold" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+      <!-- Dashboard Overview -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="card stat-card text-center p-3">
+            <h6>Available Products</h6>
+            <h2>980</h2>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card stat-card text-center p-3">
+            <h6>Sales Today</h6>
+            <h2>45</h2>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card stat-card text-center p-3">
+            <h6>My Earnings</h6>
+            <h2>UGX 1,200</h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Viewing -->
+      <div class="card">
+        <div class="card-header">Available Products</div>
+        <div class="card-body">
+          <table class="table table-dark table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hammer</td>
+                <td>UGX10</td>
+                <td>50</td>
+              </tr>
+              <tr>
+                <td>Nails</td>
+                <td>UGX2</td>
+                <td>200</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sales Function -->
+      <div class="card">
+        <div class="card-header">Record a Sale</div>
+        <div class="card-body">
+          <form>
+            <div class="mb-3">
+              <label for="product" class="form-label">Product</label>
+              <select class="form-select" id="product" required>
+                <option value="">Select product</option>
+                <option value="Hammer">Hammer</option>
+                <option value="Nails">Nails</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="quantity" class="form-label">Quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                id="quantity"
+                placeholder="Enter quantity"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-gold">Record Sale</button>
+          </form>
+          <!-- <div class="mt-3">
+            <p class="text-success">✔ Sale recorded successfully!</p>
+          </div> -->
+        </div>
+      </div>
+
+      <!-- Sales Records -->
+      <div class="card">
+        <div class="card-header">My Recent Sales</div>
+        <div class="card-body">
+          <table class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hammer</td>
+                <td>5</td>
+                <td>UGX50</td>
+                <td>2026-04-21</td>
+              </tr>
+              <tr>
+                <td>Nails</td>
+                <td>20</td>
+                <td>UGX40</td>
+                <td>2026-04-22</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ! JS link -->
+     <script src="/Js/dashboard.js"></script>
+  </body>
+</html>

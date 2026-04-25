@@ -1,0 +1,53 @@
+body {
+  background: #0f0f0f;
+  color: #e5e5e5;
+}
+
+.navbar {
+  background: #000;
+}
+
+.navbar a {
+  color: #e5e5e5 !important;
+}
+
+.navbar a:hover {
+  color: #d4af37 !important;
+}
+
+h1 {
+  color: #d4af37;
+}
+
+.card {
+  background: #1e1e1e;
+  border: 1px solid #444;
+}
+
+.card-header {
+  background: #2c2c2c;
+  color: #d4af37;
+}
+
+.btn-gold {
+  background: #d4af37;
+  color: #000;
+  font-weight: bold;
+}
+
+.btn-gold:hover {
+  background: #b9972c;
+  box-shadow: 0 0 10px #d4af37;
+}
+
+.table thead {
+  background: #2c2c2c;
+  color: #d4af37;
+}
+
+.table tbody tr:hover {
+  background: #2c2c2c;
+}
+input::placeholder {
+  color: #aaa;
+}

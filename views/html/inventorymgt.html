@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NyondoStock Inventory Management</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="Style/inventory.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand text-warning" href="#">NyondoStock</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Inventory</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="#">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Inventory Management Section -->
+    <div class="container mt-4">
+      <div class="card">
+        <div class="card-header">Inventory Management</div>
+        <div class="card-body">
+          <div class="input-group mb-3">
+            <input type="text"
+            id="searchInput"
+            name="search"
+            class="form-control bg-dark text-white border-secondary"
+            placeholder="Search products...">
+
+            <button class="btn btn-gold" id="searchBtn">Search🔍</button>
+          </div>
+          <button
+            class="btn btn-gold mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#addProductModal"
+          >
+            Add New Product
+          </button>
+          <table class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productTable">
+              <tr>
+                <td>Hammer</td>
+                <td>Tools</td>
+                <td>UGX10</td>
+                <td>50</td>
+                <td>In Stock</td>
+                <td>
+                  <button class="btn btn-sm btn-gold">Edit</button>
+                  <button class="btn btn-sm btn-danger">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Nails</td>
+                <td>Hardware</td>
+                <td>UGX2</td>
+                <td>200</td>
+                <td>In Stock</td>
+                <td>
+                  <button class="btn btn-sm btn-gold">Edit</button>
+                  <button class="btn btn-sm btn-danger">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div
+      class="modal fade"
+      id="addProductModal"
+      tabindex="-1"
+      aria-labelledby="addProductModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header">
+            <h5 class="modal-title text-warning" id="addProductModalLabel">
+              Add New Product
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addProductForm">
+              <div class="mb-3">
+                <label for="productName" class="form-label">Product Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="productname"
+                  id="productName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="category"
+                  id="category"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" name="price" required />
+              </div>
+              <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="quantity"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-gold">Submit</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS + Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document
+        .getElementById("addProductForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById("productName").value;
+          const category = document.getElementById("category").value;
+          const price = document.getElementById("price").value;
+          const quantity = document.getElementById("quantity").value;
+          const status = quantity > 10 ? "In Stock" : "Low Stock";
+
+          const table = document.getElementById("productTable");
+          const newRow = table.insertRow();
+
+          newRow.innerHTML = `
+      <td>${name}</td>
+      <td>${category}</td>
+      <td>UGX${price}</td>
+      <td>${quantity}</td>
+      <td>${status}</td>
+      <td>
+        <button class="btn btn-sm btn-gold">Edit</button>
+        <button class="btn btn-sm btn-danger">Delete</button>
+      </td>
+    `;
+
+          // Reset form and close modal
+          document.getElementById("addProductForm").reset();
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("addProductModal"),
+          );
+          modal.hide();
+        });
+    </script>
+  </body>
+</html>

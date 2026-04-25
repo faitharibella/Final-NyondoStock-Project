@@ -1,0 +1,34 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title NyondoStock Registration
+  // Bootstrap CSS
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet')
+  link(rel='stylesheet' href='/css/register.css')
+.card
+  h2 Register - NyondoStock
+  form#registerForm
+    .mb-3
+      label.form-label(for='fullName') Full Name
+      input#fullName.form-control(type='text' required='')
+    .mb-3
+      label.form-label(for='email') Email Address
+      input#email.form-control(type='email' required='')
+    .mb-3
+      label.form-label(for='password') Password
+      input#password.form-control(type='password' required='')
+    .mb-3
+      label.form-label(for='confirmPassword') Confirm Password
+      input#confirmPassword.form-control(type='password' required='')
+    .mb-3
+      label.form-label(for='role') Role
+      select#role.form-select(required='')
+        option(value='') Select role
+        option(value='Salesperson') Salesperson
+        option(value='Admin') Admin
+    button.btn.btn-gold(type='submit') Register
+    #formMessage.message
+// Bootstrap JS + Custom JS
+script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js')
+script(src='/Js/register.js')

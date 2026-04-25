@@ -1,0 +1,55 @@
+body {
+  background-color: #121212;
+  color: #ffffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.navbar {
+  background-color: #000;
+}
+.navbar-brand,
+.nav-link {
+  color: #ffffff ;
+  font-weight: 500;
+}
+.nav-link:hover {
+  color: gold ;
+}
+.card {
+  background: #1e1e1e;
+  border: 1px solid #444;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+.card-header {
+  background: #2c2c2c;
+  color: gold;
+  font-weight: bold;
+}
+.btn-gold {
+  background-color: gold;
+  color: #000;
+  font-weight: bold;
+}
+.btn-gold:hover {
+  background-color: #d4af37;
+  color: #fff;
+}
+.table {
+  color: #ffffff;
+}
+.table thead {
+  background: #2c2c2c;
+  color: gold;
+}
+.table-hover tbody tr:hover{
+  background-color: #2a2a2a;
+}
+.stat-card {
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  border: 1px solid gold;
+}
