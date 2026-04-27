@@ -1,0 +1,53 @@
+const express = require("express");
+const router = express.Router();
+const Registration = require("../model/Registration");
+
+//Get index page
+router.get("/", (req, res) => {
+  res.render("index");
+});
+
+router.post('/form',(req,res)=>{
+  console.log(req.body)
+
+})
+
+router.get("/registerform", (req, res) => {
+  res.render("registration");
+});
+router.post("/registerpost", async (req, res) => {
+  try {
+    const { fullname, email, password, role } = req.body;
+    //check if user already exists
+    // let existingUser = await Registration.findOne({
+    //   email: email.toLowerCase(),
+    // });
+    // if (existingUser) {
+    //   return res.render("registration", {
+    //     error: "email is already registered",
+    //   });
+    // }
+    //create new user
+    const newUser = new Registration({
+      fullname,
+      email: email.toLowerCase(),
+      password,
+      role
+    });
+    console.log(newUser);
+    await newUser.save();
+    res.redirect("/login");
+  } catch (error) {
+    console.error(error);
+    res.render("registration", { error: error.message });
+  }
+
+  
+});
+
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
+
+module.exports = router;
