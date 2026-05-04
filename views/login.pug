@@ -35,7 +35,7 @@ ul#myTab.nav.nav-tabs(role='tablist')
     p.text-center.text-secondary.mb-4
       | Hardware Management System
     // THE ACTUAL LOGIN FORM
-    form(action='' method='')
+    form(action='/login' method='post')
       .mb-3
         label.form-label(for='email') Email address
         input#email.form-control(type='email' name='email' placeholder='Enter your email')

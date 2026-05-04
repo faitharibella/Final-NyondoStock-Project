@@ -1,0 +1,73 @@
+
+    /* =====  ===== */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #f8f9fa;
+    }
+    h2 {
+      color: #ffc107;
+    }
+    .navbar {
+      background-color: #000;
+    }
+    .navbar-brand {
+      color: #ffc107 !important;
+      font-weight: bold;
+    }
+    .btn-warning {
+      color: #000;
+      font-weight: 600;
+    }
+    .btn-gold {
+      background-color: gold;
+      color: #000;
+      font-weight: bold;
+      border: none;
+    }
+    .btn-gold:hover {
+      background-color: #d4af37;
+      color: #fff;
+    }
+    .table th {
+      color: #ffc107;
+    }
+    .modal-content {
+      background-color: #1e1e1e;
+      color: #f8f9fa;
+    }
+    .form-control, .form-select {
+      background-color: #2c2c2c;
+      border: 1px solid #444;
+      color: #fff;
+    }
+    .form-control:focus, .form-select:focus {
+      background-color: #2c2c2c;
+      color: #fff;
+      border-color: gold;
+      box-shadow: none;
+    }
+    .badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+    }
+    .badge-active {
+      background-color: #28a745;
+      color: #fff;
+    }
+    .badge-inactive {
+      background-color: #6c757d;
+      color: #fff;
+    }
+    .badge-admin {
+      background-color: #dc3545;
+      color: #fff;
+    }
+    .badge-manager {
+      background-color: #ffc107;
+      color: #000;
+    }
+    .badge-salesperson {
+      background-color: #17a2b8;
+      color: #fff;
+    }

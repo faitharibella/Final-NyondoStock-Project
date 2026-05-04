@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NyondoStock - Activity Records</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/dashboard.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand text-warning fw-bold" href="admindash.html">NyondoStock Admin</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link text-danger" href="admindash.html">Back</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid mt-4">
+  <h2 class="text-warning mb-4"> System Activity Records</h2>
+
+  <!-- Filter Section -->
+  <div class="card mb-4">
+    <div class="card-header">🔍 Filter Activities</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <select class="form-select">
+            <option>All Activities</option>
+            <option>User Actions</option>
+            <option>Stock Updates</option>
+            <option>Sales</option>
+            <option>Payments</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <input type="date" class="form-control" placeholder="From Date">
+        </div>
+        <div class="col-md-3">
+          <input type="date" class="form-control" placeholder="To Date">
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-gold w-100">Apply Filter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Log Table -->
+  <div class="card">
+    <div class="card-header"> All System Activities</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr><th>Time</th><th>User</th><th>Role</th><th>Action</th><th>Details</th><th>IP Address</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2026-04-30 10:30:22</a><td>Admin User</a><td>Admin</a><td>User Login</a><td>Logged in successfully</a><td>192.168.1.1</a></tr>
+            <tr><td>2026-04-30 09:15:03</a><td>Sarah Sales</a><td>Salesperson</a><td>Sale Recorded</a><td>Sold 2 Hammer to John Doe</a><td>192.168.1.5</a></tr>
+            <tr><td>2026-04-30 08:45:12</a><td>Manager User</a><td>Manager</a><td>Stock Update</a><td>Added 50 units of Cement</a><td>192.168.1.3</a></tr>
+            <tr><td>2026-04-29 16:20:45</a><td>Admin User</a><td>Admin</a><td>User Created</a><td>Added new user: Mary Achieng</a><td>192.168.1.1</a></tr>
+            <tr><td>2026-04-29 14:30:18</a><td>Sarah Sales</a><td>Salesperson</a><td>Payment Received</a><td>UGX 245,000 from customer</a><td>192.168.1.5</a></td>
+            <tr><td>2026-04-29 11:00:32</a><td>Manager User</a><td>Manager</a><td>Product Added</a><td>Added new product: Paint Brush</a><td>192.168.1.3</a></tr>
+            <tr><td>2026-04-28 15:45:22</a><td>Admin User</a><td>Admin</a><td>Credit Added</a><td>Added supplier credit for Cement Ltd</a><td>192.168.1.1</a></tr>
+            <tr><td>2026-04-28 10:20:55</a><td>Sarah Sales</a><td>Salesperson</a>たらLogout</a><td>User logged out</a><td>192.168.1.5</a></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

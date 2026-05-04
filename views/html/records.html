@@ -7,110 +7,150 @@
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #121212;
-      color: #ffffff;
-    }
-
-    h2, h5 {
-      color: #ffc107;
-    }
-
-    .navbar {
-      background-color: #000;
-    }
-
-    .navbar-brand {
-      color: #ffc107 !important;
-      font-weight: bold;
-    }
-
-    .card {
-      background-color: #1e1e1e;
-      border: 1px solid #333;
-    }
-
-    .table th {
-      color: #ffc107;
-    }
-
-    .btn-warning {
-      color: #000;
-      font-weight: 600;
-    }
-
-    /* Force white text everywhere */
-    p, td, th, label {
-      color: #ffffff !important;
-    }
-  </style>
+  <link rel="stylesheet" href="/public/css/dashboard.css">
 </head>
-
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-dark px-3">
-    <a class="navbar-brand" href="#">NyondoStock</a>
-    <button class="btn btn-outline-warning ms-auto" onclick="history.back()">Back</button>
-  </nav>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand text-warning fw-bold" href="admindash.html">NyondoStock Admin</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link text-danger" href="admindash.html">Back</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-  <!-- Content -->
-  <div class="container my-4">
-    <h2 class="fw-bold">System Records</h2>
-    <p class="text-secondary">View all system activities and history</p>
+<!-- Main Content -->
+<div class="container-fluid mt-4">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-warning"> System Records</h2>
+    <div class="text-muted" id="currentDate"></div>
+  </div>
 
-    <!-- Filters -->
-    <div class="card p-3 mb-4">
+  <!-- Filter Section -->
+  <div class="card mb-4">
+    <div class="card-header"> Filter Records</div>
+    <div class="card-body">
       <div class="row g-3">
         <div class="col-md-3">
-          <input type="date" id="startDate" class="form-control">
+          <label class="form-label">From Date</label>
+          <input type="date" class="form-control">
         </div>
         <div class="col-md-3">
-          <input type="date" id="endDate" class="form-control">
+          <label class="form-label">To Date</label>
+          <input type="date" class="form-control">
         </div>
         <div class="col-md-3">
-          <select id="recordType" class="form-select">
-            <option value="All">All</option>
-            <option value="Sales">Sales</option>
-            <option value="Stock">Stock</option>
-            <option value="User">User Actions</option>
+          <label class="form-label">Record Type</label>
+          <select class="form-select">
+            <option>All Records</option>
+            <option>Sales</option>
+            <option>Stock Updates</option>
+            <option>User Actions</option>
+            <option>Credit Payments</option>
+            <option>Deposits</option>
           </select>
         </div>
         <div class="col-md-3">
-          <input type="text" id="searchInput" class="form-control" placeholder="Search by product or user">
+          <label class="form-label">&nbsp;</label>
+          <button class="btn btn-gold w-100">Apply Filter</button>
         </div>
       </div>
-      <div class="mt-3 text-end">
-        <button class="btn btn-warning" id="filterBtn">Filter Records</button>
-      </div>
     </div>
+  </div>
 
-    <!-- Table -->
-    <div class="card p-3 mb-4">
-      <h5>Records Table</h5>
+  <!-- Records Table -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      <span> All System Records</span>
+      <button class="btn btn-sm btn-gold" onclick="window.print()"> Print</button>
+    </div>
+    <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-dark table-striped table-hover" id="recordsTable">
+        <table class="table">
           <thead>
             <tr>
-              <th>ID</th><th>Date</th><th>Type</th><th>Description</th>
-              <th>Product</th><th>Quantity</th><th>User</th><th>Status</th><th>Actions</th>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>User</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
+            <!-- Sales Records -->
             <tr>
-              <td>R001</td><td>2026-04-20</td><td>Sales</td><td>Sold 10 Cement Bags</td><td>Cement</td><td>10</td><td>Salesperson</td><td>Completed</td>
-              <td><button class="btn btn-warning btn-sm view-btn">View</button> <button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+              <td>R001</a><td>2026-04-30</a><td><span class="badge badge-success">Sales</span></a>
+              <td>Sold 2 Hammer to John Doe</a><td>Hammer</a><td>2</a><td>Salesperson</a>
+              <td><span class="badge badge-success">Completed</span></a>
             </tr>
             <tr>
-              <td>R002</td><td>2026-04-21</td><td>Stock</td><td>Added 50 Nails</td><td>Nails</td><td>50</td><td>Manager</td><td>Completed</td>
-              <td><button class="btn btn-warning btn-sm view-btn">View</button> <button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+              <td>R002</a><td>2026-04-30</a><td><span class="badge badge-success">Sales</span></a>
+              <td>Sold 5 Nails to Mary Smith</a><td>Nails</a><td>5</a><td>Salesperson</a>
+              <td><span class="badge badge-success">Completed</span></a>
             </tr>
             <tr>
-              <td>R003</td><td>2026-04-22</td><td>User</td><td>Admin created user</td><td>-</td><td>-</td><td>Admin</td><td>Pending</td>
-              <td><button class="btn btn-warning btn-sm view-btn">View</button> <button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+              <td>R003</a><td>2026-04-30</a><td><span class="badge badge-success">Sales</span></a>
+              <td>Sold 3 Paint to Peter Okoth</a><td>Paint</a><td>3</a><td>Salesperson</a>
+              <td><span class="badge badge-success">Completed</span></a>
+            </tr>
+
+            <!-- Stock Updates -->
+            <tr>
+              <td>R004</a><td>2026-04-29</a><td><span class="badge badge-info">Stock</span></a>
+              <td>Added 50 units of Cement</a><td>Cement</a><td>+50</a><td>Manager</a>
+              <td><span class="badge badge-success">Completed</span></a>
+            </tr>
+            <tr>
+              <td>R005</a><td>2026-04-29</a><td><span class="badge badge-info">Stock</span></a>
+              <td>Added 100 units of Nails</a><td>Nails</a><td>+100</a><td>Manager</a>
+              <td><span class="badge badge-success">Completed</span></a>
+            </tr>
+
+            <!-- User Actions -->
+            <tr>
+              <td>R006</a><td>2026-04-28</a><td><span class="badge badge-warning">User</span></a>
+              <td>Admin created new user: Sarah Sales</a><td>-</a><td>-</a><td>Admin</a>
+              <td><span class="badge badge-success">Completed</span></a>
+            </tr>
+            <tr>
+              <td>R007</a><td>2026-04-28</a><td><span class="badge badge-warning">User</span></a>
+              <td>Admin updated user role for John Doe</a><td>-</a><td>-</a><td>Admin</a>
+              <td><span class="badge badge-success">Completed</span></a>
+            </tr>
+
+            <!-- Credit Payments -->
+            <tr>
+              <td>R008</a><td>2026-04-27</a><td><span class="badge badge-danger">Credit</span></a>
+              <td>Paid UGX 500,000 to Cement Ltd</a><td>-</a><td>-</a><td>Admin</a>
+              <td><span class="badge badge-success">Paid</span></a>
+            </tr>
+            <tr>
+              <td>R009</a><td>2026-04-27</a><td><span class="badge badge-danger">Credit</span></a>
+              <td>Paid UGX 300,000 to Paint Suppliers</a><td>-</a><td>-</a><td>Admin</a>
+              <td><span class="badge badge-success">Paid</span></a>
+            </tr>
+
+            <!-- Customer Deposits -->
+            <tr>
+              <td>R010</a><td>2026-04-26</a><td><span class="badge badge-success">Deposit</span></a>
+              <td>John Otim deposited UGX 200,000</a><td>-</a><td>-</a><td>Admin</a>
+              <td><span class="badge badge-success">Active</span></a>
+            </tr>
+            <tr>
+              <td>R011</a><td>2026-04-25</a><td><span class="badge badge-success">Deposit</span></a>
+              <td>Mary Achieng deposited UGX 100,000</a><td>-</a><td>-</a><td>Admin</a>
+              <td><span class="badge badge-success">Active</span></a>
             </tr>
           </tbody>
         </table>
@@ -118,75 +158,41 @@
     </div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="recordModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content bg-dark text-light">
-        <div class="modal-header">
-          <h5 class="modal-title">Record Details</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body" id="modalBody"></div>
+  <!-- Summary Cards -->
+  <div class="row g-4 mt-2">
+    <div class="col-md-3">
+      <div class="card stat-card">
+        <h6>Total Sales Records</h6>
+        <div class="stat-number">156</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stat-card">
+        <h6>Stock Updates</h6>
+        <div class="stat-number">89</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stat-card">
+        <h6>User Actions</h6>
+        <div class="stat-number">45</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stat-card">
+        <h6>Financial Transactions</h6>
+        <div class="stat-number">67</div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script>
-    const tableBody = document.querySelector("#recordsTable tbody");
-
-    // FILTER
-    document.getElementById("filterBtn").addEventListener("click", () => {
-      const start = document.getElementById("startDate").value;
-      const end = document.getElementById("endDate").value;
-      const type = document.getElementById("recordType").value;
-      const search = document.getElementById("searchInput").value.toLowerCase();
-
-      Array.from(tableBody.rows).forEach(row => {
-        const date = row.cells[1].textContent;
-        const rType = row.cells[2].textContent;
-        const text = row.textContent.toLowerCase();
-
-        let show = true;
-
-        if (start && date < start) show = false;
-        if (end && date > end) show = false;
-        if (type !== "All" && rType !== type) show = false;
-        if (search && !text.includes(search)) show = false;
-
-        row.style.display = show ? "" : "none";
-      });
-    });
-
-    // DELETE
-    tableBody.addEventListener("click", (e) => {
-      if (e.target.classList.contains("delete-btn")) {
-        e.target.closest("tr").remove();
-      }
-    });
-
-    // VIEW DETAILS
-    tableBody.addEventListener("click", (e) => {
-      if (e.target.classList.contains("view-btn")) {
-        const row = e.target.closest("tr");
-
-        document.getElementById("modalBody").innerHTML = `
-          <p><strong>ID:</strong> ${row.cells[0].textContent}</p>
-          <p><strong>Date:</strong> ${row.cells[1].textContent}</p>
-          <p><strong>Type:</strong> ${row.cells[2].textContent}</p>
-          <p><strong>Description:</strong> ${row.cells[3].textContent}</p>
-          <p><strong>Product:</strong> ${row.cells[4].textContent}</p>
-          <p><strong>Quantity:</strong> ${row.cells[5].textContent}</p>
-          <p><strong>User:</strong> ${row.cells[6].textContent}</p>
-          <p><strong>Status:</strong> ${row.cells[7].textContent}</p>
-        `;
-
-        new bootstrap.Modal(document.getElementById("recordModal")).show();
-      }
-    });
-  </script>
-
+<script>
+  // Only for current date display - minimal JS
+  document.getElementById('currentDate').innerHTML = new Date().toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

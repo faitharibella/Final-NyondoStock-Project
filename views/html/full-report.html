@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NyondoStock - Reports</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/public/css/dashboard.css" />
+    <style>
+      .report-card {
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      .report-card:hover {
+        transform: translateY(-5px);
+      }
+      .filter-bar {
+        background: #1e1e1e;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand text-warning fw-bold" href="#"
+          >NyondoStock Reports</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <button
+                id="backBtn"
+                class="nav-link bg-transparent border-0"
+                style="cursor: pointer"
+                href="admindash.html"
+              >
+                Back
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+      <!-- Page Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-warning">📊 Reports Dashboard</h2>
+        <div class="text-muted" id="currentDateTime"></div>
+      </div>
+
+      <!-- Report Type Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-3">
+          <div
+            class="card report-card text-center"
+            onclick="showReport('daily')"
+          >
+            <div class="card-body">
+              <h1>📅</h1>
+              <h5>Daily Sales Report</h5>
+              <small class="text-muted">View today's sales</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div
+            class="card report-card text-center"
+            onclick="showReport('weekly')"
+          >
+            <div class="card-body">
+              <h1>📆</h1>
+              <h5>Weekly Report</h5>
+              <small class="text-muted">Last 7 days summary</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div
+            class="card report-card text-center"
+            onclick="showReport('monthly')"
+          >
+            <div class="card-body">
+              <h1>📊</h1>
+              <h5>Monthly Report</h5>
+              <small class="text-muted">This month's performance</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div
+            class="card report-card text-center"
+            onclick="showReport('stock')"
+          >
+            <div class="card-body">
+              <h1>📦</h1>
+              <h5>Stock Report</h5>
+              <small class="text-muted">Current inventory status</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="row">
+          <div class="col-md-4">
+            <label class="form-label">From Date</label>
+            <input type="date" id="fromDate" class="form-control" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">To Date</label>
+            <input type="date" id="toDate" class="form-control" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">&nbsp;</label>
+            <button class="btn btn-gold w-100" id="applyFilterBtn">
+              Apply Filter
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAILY SALES REPORT -->
+      <div id="dailyReport" class="report-section">
+        <div class="card">
+          <div class="card-header">
+            <span> Daily Sales Report - <span id="dailyDate"></span></span>
+          </div>
+          <div class="card-body">
+            <div class="row g-4 mb-4">
+              <div class="col-md-3">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Total Sales</h6>
+                    <h3 class="text-warning">UGX 725,000</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Items Sold</h6>
+                    <h3 class="text-info">72</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Transactions</h6>
+                    <h3 class="text-success">18</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Top Product</h6>
+                    <h3 class="text-warning">Nails</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h6 class="text-warning mb-3">Sales by Salesperson</h6>
+            <div class="table-responsive mb-4">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Salesperson</th>
+                    <th>Items Sold</th>
+                    <th>Total Sales (UGX)</th>
+                    <th>Commission (5%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sarah Smith</td>
+                    <td>25</td>
+                    <td>235,000</td>
+                    <td>11,750</td>
+                  </tr>
+                  <tr>
+                    <td>John Doe</td>
+                    <td>15</td>
+                    <td>180,000</td>
+                    <td>9,000</td>
+                  </tr>
+                  <tr>
+                    <td>Mary Johnson</td>
+                    <td>32</td>
+                    <td>310,000</td>
+                    <td>15,500</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h6 class="text-warning mb-3">Top Selling Products Today</h6>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Quantity Sold</th>
+                    <th>Revenue (UGX)</th>
+                    <th>Stock Remaining</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Nails</td>
+                    <td>45</td>
+                    <td>360,000</td>
+                    <td>155</td>
+                  </tr>
+                  <tr>
+                    <td>Hammer</td>
+                    <td>12</td>
+                    <td>180,000</td>
+                    <td>38</td>
+                  </tr>
+                  <tr>
+                    <td>Paint</td>
+                    <td>8</td>
+                    <td>120,000</td>
+                    <td>22</td>
+                  </tr>
+                  <tr>
+                    <td>Cement</td>
+                    <td>7</td>
+                    <td>105,000</td>
+                    <td>3</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEKLY SALES REPORT -->
+      <div id="weeklyReport" class="report-section" style="display: none">
+        <div class="card">
+          <div class="card-header">
+            <span> Weekly Sales Report - Last 7 Days</span>
+          </div>
+          <div class="card-body">
+            <div class="row g-4 mb-4">
+              <div class="col-md-4">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Total Weekly Sales</h6>
+                    <h3 class="text-warning">UGX 4,850,000</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Total Items Sold</h6>
+                    <h3 class="text-info">520</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Average Daily Sales</h6>
+                    <h3 class="text-success">UGX 692,857</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h6 class="text-warning mb-3">Daily Breakdown</h6>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Day</th>
+                    <th>Date</th>
+                    <th>Sales (UGX)</th>
+                    <th>Items Sold</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Monday</td>
+                    <td>2026-04-24</td>
+                    <td>620,000</td>
+                    <td>68</td>
+                  </tr>
+                  <tr>
+                    <td>Tuesday</td>
+                    <td>2026-04-25</td>
+                    <td>710,000</td>
+                    <td>75</td>
+                  </tr>
+                  <tr>
+                    <td>Wednesday</td>
+                    <td>2026-04-26</td>
+                    <td>690,000</td>
+                    <td>72</td>
+                  </tr>
+                  <tr>
+                    <td>Thursday</td>
+                    <td>2026-04-27</td>
+                    <td>845,000</td>
+                    <td>88</td>
+                  </tr>
+                  <tr>
+                    <td>Friday</td>
+                    <td>2026-04-28</td>
+                    <td>950,000</td>
+                    <td>95</td>
+                  </tr>
+                  <tr>
+                    <td>Saturday</td>
+                    <td>2026-04-29</td>
+                    <td>725,000</td>
+                    <td>72</td>
+                  </tr>
+                  <tr>
+                    <td>Sunday</td>
+                    <td>2026-04-30</td>
+                    <td>310,000</td>
+                    <td>50</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MONTHLY SALES REPORT -->
+      <div id="monthlyReport" class="report-section" style="display: none">
+        <div class="card">
+          <div class="card-header">
+            <span> Monthly Report - April 2026</span>
+          </div>
+          <div class="card-body">
+            <div class="row g-4 mb-4">
+              <div class="col-md-3">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Total Monthly Sales</h6>
+                    <h3 class="text-warning">UGX 18.2M</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Total Items Sold</h6>
+                    <h3 class="text-info">2,150</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Total Transactions</h6>
+                    <h3 class="text-success">485</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Growth vs Last Month</h6>
+                    <h3 class="text-warning">+8.5%</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h6 class="text-warning mb-3">Top 5 Products (Month)</h6>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Units Sold</th>
+                    <th>Revenue (UGX)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Nails</td>
+                    <td>850</td>
+                    <td>6,800,000</td>
+                  </tr>
+                  <tr>
+                    <td>Hammer</td>
+                    <td>320</td>
+                    <td>4,800,000</td>
+                  </tr>
+                  <tr>
+                    <td>Cement</td>
+                    <td>180</td>
+                    <td>3,600,000</td>
+                  </tr>
+                  <tr>
+                    <td>Paint</td>
+                    <td>150</td>
+                    <td>2,250,000</td>
+                  </tr>
+                  <tr>
+                    <td>Screws</td>
+                    <td>100</td>
+                    <td>750,000</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOCK REPORT -->
+      <div id="stockReport" class="report-section" style="display: none">
+        <div class="card">
+          <div class="card-header"><span> Current Stock Report</span></div>
+          <div class="card-body">
+            <div class="row g-4 mb-4">
+              <div class="col-md-4">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Total Products</h6>
+                    <h3 class="text-warning">24</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Total Units in Stock</h6>
+                    <h3 class="text-info">3,450</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card bg-secondary">
+                  <div class="card-body text-center">
+                    <h6>Low Stock Items</h6>
+                    <h3 class="text-danger">4</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h6 class="text-warning mb-3">All Products Stock Status</h6>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Current Stock</th>
+                    <th>Min Required</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Cement</td>
+                    <td class="text-danger">5</td>
+                    <td>50</td>
+                    <td><span class="badge bg-danger">Low Stock</span></td>
+                  </tr>
+                  <tr>
+                    <td>Paint</td>
+                    <td class="text-danger">8</td>
+                    <td>30</td>
+                    <td><span class="badge bg-danger">Low Stock</span></td>
+                  </tr>
+                  <tr>
+                    <td>Hammer</td>
+                    <td>38</td>
+                    <td>20</td>
+                    <td><span class="badge bg-success">OK</span></td>
+                  </tr>
+                  <tr>
+                    <td>Nails</td>
+                    <td>155</td>
+                    <td>100</td>
+                    <td><span class="badge bg-success">OK</span></td>
+                  </tr>
+                  <tr>
+                    <td>Screws</td>
+                    <td class="text-danger">15</td>
+                    <td>50</td>
+                    <td><span class="badge bg-danger">Low Stock</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/public/Js/report.js"></script>
+  </body>
+</html>

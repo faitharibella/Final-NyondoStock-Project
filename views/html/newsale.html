@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NyondoStock - New Sale</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/dashboard.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand text-warning fw-bold" href="#">NyondoStock</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link text-danger" href="sales-persondash.html">Back</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="text-warning mb-0"> Record New Sale</h4>
+        </div>
+        <div class="card-body">
+          <form action="" method="">
+            
+            <!-- Customer Information -->
+            <div class="mb-3">
+              <label class="form-label">Customer Name <span class="text-warning">*</span></label>
+              <input type="text" name="customerName" class="form-control" placeholder="Enter customer name" required>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Customer Phone (Optional)</label>
+              <input type="tel" name="customerPhone" class="form-control" placeholder="07XX XXX XXX">
+            </div>
+            
+            <!-- Product Selection -->
+            <div class="mb-3">
+              <label class="form-label">Select Product <span class="text-warning">*</span></label>
+              <select name="productId" class="form-select" required>
+                <option value="">-- Select Product --</option>
+                <option value="1">Hammer - UGX 15,000 (Stock: 38)</option>
+                <option value="2">Nails (box) - UGX 8,000 (Stock: 155)</option>
+                <option value="3">Cement (bag) - UGX 35,000 (Stock: 5)</option>
+                <option value="4">Paint (tin) - UGX 30,000 (Stock: 8)</option>
+                <option value="5">Screws (box) - UGX 5,000 (Stock: 15)</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Quantity <span class="text-warning">*</span></label>
+              <input type="number" name="quantity" class="form-control" value="1" min="1" required>
+            </div>
+            
+            <!-- Price and Total (readonly) -->
+            <div class="mb-3">
+              <label class="form-label">Unit Price (UGX)</label>
+              <input type="number" name="unitprice" id="unitPrice" class="form-control" readonly placeholder="Price will appear here">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Transport Fee (UGX)</label>
+              <input type="number" name="transportFee" class="form-control" placeholder="Optional transport cost" value="0">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Total Amount (UGX)</label>
+              <input type="number" name="totalamount" id="totalAmount" class="form-control" readonly placeholder="Total will be calculated">
+            </div>
+            
+            <!-- Payment Information -->
+            <div class="mb-3">
+              <label class="form-label">Amount Paid (UGX) <span class="text-warning">*</span></label>
+              <input type="number" name="amountPaid" class="form-control" placeholder="Enter amount paid" required>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Change (UGX)</label>
+              <input type="number" name="change" id="change" class="form-control" readonly placeholder="Change will be calculated">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Payment Method</label>
+              <select name="paymentMethod" class="form-select">
+                <option>Cash</option>
+                <option>Mobile Money</option>
+                <option>Bank Transfer</option>
+                <option>Credit (Deposit)</option>
+              </select>
+            </div>
+            
+            <button type="submit" class="btn btn-gold w-100"> Complete Sale</button>
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Minimal JavaScript for calculations -->
+<script src="/public/Js/newsale.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
