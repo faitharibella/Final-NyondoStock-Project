@@ -1,0 +1,171 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title NyondoStock - Stock Alerts
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet')
+  link(rel='stylesheet' href='/css/dashboard.css')
+nav.navbar.navbar-expand-lg
+  .container-fluid
+    a.navbar-brand.text-warning.fw-bold(href='admindash.html') NyondoStock Admin
+    button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav')
+      span.navbar-toggler-icon
+    #navbarNav.collapse.navbar-collapse
+      ul.navbar-nav.ms-auto
+        li.nav-item
+          a.nav-link.text-danger(href='admindash.html') Back
+.container-fluid.mt-4
+  h2.text-warning.mb-4  Low Stock Alerts
+  // Alert Summary
+  .row.g-4.mb-4
+    .col-md-4
+      .card.stat-card
+        h6 Critical Stock (0-10)
+        .stat-number.text-danger 3
+    .col-md-4
+      .card.stat-card
+        h6 Low Stock (11-20)
+        .stat-number.text-warning 2
+    .col-md-4
+      .card.stat-card
+        h6 Products Need Reorder
+        .stat-number 5
+  // Critical Stock Table
+  .card.mb-4
+    .card-header.bg-danger.text-white  CRITICAL STOCK (URGENT)
+    .card-body
+      table.table
+        thead
+          tr
+            th Product
+            th Current Stock
+            th Min Required
+            th Supplier
+            th Action
+        tbody
+          tr
+            td.text-danger.font-weight-bold Cement (bag)
+            td.text-danger.font-weight-bold 5
+            td 50
+            td Cement Ltd
+            td
+              button.btn.btn-sm.btn-gold Reorder Now
+          tr
+            td.text-danger.font-weight-bold Paint (tin)
+            td.text-danger.font-weight-bold 8
+            td 30
+            td Paint Suppliers
+            td
+              button.btn.btn-sm.btn-gold Reorder Now
+          tr
+            td.text-danger.font-weight-bold Screws (box)
+            td.text-danger.font-weight-bold 15
+            td 50
+            td Tools Depot
+            td
+              button.btn.btn-sm.btn-gold Reorder Now
+  // Low Stock Table
+  .card.mb-4
+    .card-header.bg-warning.text-dark  LOW STOCK (REORDER SOON)
+    .card-body
+      table.table
+        thead
+          tr
+            th Product
+            th Current Stock
+            th Min Required
+            th Supplier
+            th Action
+        tbody
+          tr
+            td Nails (box)
+            td.text-warning 25
+            td 30
+            td Steel Works
+            td
+              button.btn.btn-sm.btn-gold Reorder
+          tr
+            td Wood Polish
+            td.text-warning 18
+            td 20
+            td Chemicals Ltd
+            td
+              button.btn.btn-sm.btn-gold Reorder
+  // All Products Stock Status
+  .card
+    .card-header  Complete Stock Status
+    .card-body
+      table.table
+        thead
+          tr
+            th Product
+            th Current Stock
+            th Min Required
+            th Status
+            th Last Updated
+            th Action
+        tbody
+          tr
+            td Hammer
+            td 38
+            td 10
+            td
+              span.badge.badge-success Good
+            td 2026-04-28
+            td
+              button.btn.btn-sm.btn-gold Update
+          tr
+            td Nails (box)
+            td.text-warning 25
+            td 30
+            td
+              span.badge.badge-warning Low
+            td 2026-04-28
+            td
+              button.btn.btn-sm.btn-gold Update
+          tr
+            td Cement (bag)
+            td.text-danger 5
+            td 50
+            td
+              span.badge.badge-danger Critical
+            td 2026-04-28
+            td
+              button.btn.btn-sm.btn-gold Update
+          tr
+            td Paint (tin)
+            td.text-danger 8
+            td 30
+            td
+              span.badge.badge-danger Critical
+            td 2026-04-28
+            td
+              button.btn.btn-sm.btn-gold Update
+          tr
+            td Screws (box)
+            td.text-danger 15
+            td 50
+            td
+              span.badge.badge-danger Critical
+            td 2026-04-28
+            td
+              button.btn.btn-sm.btn-gold Update
+          tr
+            td Paint Brush
+            td 50
+            td 15
+            td
+              span.badge.badge-success Good
+            td 2026-04-27
+            td
+              button.btn.btn-sm.btn-gold Update
+          tr
+            td Wood Polish
+            td.text-warning 18
+            td 20
+            td
+              span.badge.badge-warning Low
+            td 2026-04-27
+            td
+              button.btn.btn-sm.btn-gold Update
+script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js')

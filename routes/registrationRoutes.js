@@ -34,7 +34,8 @@ router.post('/users', async (req, res) => {
         const newUser = new Registration({
             fullname,
             email: email.toLowerCase(),
-            role: role || 'Salesperson'
+            role: role || 'Salesperson',
+            status: status || 'active'
         });
         
         // Use register method from passport (Registration model has passport plugin)
@@ -76,16 +77,17 @@ router.get('/users/search', async (req, res) => {
     }
 });
 
-// Edit user
+// Edit user - FIXED: now updates status
 router.post('/users/edit', async (req, res) => {
     try {
         const { id, fullname, email, role, status } = req.body;
         
-        // Update user (status field might not exist in Registration schema - check)
+        //  Now includes status in the update!
         await Registration.findByIdAndUpdate(id, { 
             fullname, 
             email: email.toLowerCase(), 
-            role 
+            role,
+            status  // ← ADDED THIS LINE
         });
         res.redirect('/users?success=User updated');
     } catch (error) {

@@ -13,6 +13,7 @@ const Registration = require('./model/Registration');
 const User = require('./model/User');
 const Product = require('./model/Product');
 const Sales = require('./model/Sales');  
+const Stock = require('./model/Stock')
 
 // SECTION 2: Instantiations
 const app = express();
@@ -49,12 +50,14 @@ app.use((req,res,next)=>{
 })
 
 9// SECTION 5: Routes
-app.use('/', require('./routes/BTSRoutes'));
+app.use('/', require('./routes/registrationRoutes'));
 app.use('/',require('./routes/authRoutes'));
 app.use('/', require('./routes/dashboardRoutes'));
 app.use('/', require('./routes/productRoutes'));
-app.use('/', require('./routes/inventoryRoutes'));
 app.use('/', require('./routes/salesRoutes'));
+app.use('/', require('./routes/registrationRoutes'));
+app.use('/', require('./routes/stockRoutes'));
+
 
 
 // Second last chunk of code in this file ever
