@@ -6,100 +6,104 @@ head
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet')
   link(rel='stylesheet' href='/css/dashboard.css')
   style.
-    /* Dropdown menu styling */
     .dropdown-menu {
-    background-color: #1e1e1e;
-    border: 1px solid #444;
+      background-color: #1e1e1e;
+      border: 1px solid #444;
     }
     .dropdown-item {
-    color: #fff;
+      color: #fff;
     }
     .dropdown-item:hover {
-    background-color: #2c2c2c;
-    color: gold;
+      background-color: #2c2c2c;
+      color: gold;
     }
     .nav-item.dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0;
+      display: block;
+      margin-top: 0;
     }
-// ADMIN NAVBAR - Complete Navigation
+
+// ADMIN NAVBAR
 nav.navbar.navbar-expand-lg
   .container-fluid
-    a.navbar-brand.text-warning.fw-bold(href='admindashboard.html')  NyondoStock Admin
+    a.navbar-brand.text-warning.fw-bold(href='#') NyondoStock Admin
     button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav')
       span.navbar-toggler-icon
     #navbarNav.collapse.navbar-collapse
       ul.navbar-nav.ms-auto
         // Dashboard
         li.nav-item
-          a.nav-link.active(href='admindashboard.html')  Dashboard
-        // USERS Dropdown
+          a.nav-link.active(href='#') Dashboard
+        
+        // USERS
         li.nav-item.dropdown
-          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown') &#x1F465; Users
+          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Users
           ul.dropdown-menu
             li
-              a.dropdown-item(href='users')  User Management
-        // STOCK Dropdown
+              a.dropdown-item(href='users') User Management
+            li
+              a.dropdown-item(href='registerform') Register New User  
+        
+        // STOCK (Products only - removed Inventory)
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Stock
           ul.dropdown-menu
             li
-              a.dropdown-item(href='products')  Products
+              a.dropdown-item(href='add_stock') Register Stock
             li
-              a.dropdown-item(href='inventorymgt')  Inventory
-            li
-              a.dropdown-item(href='stock-alerts.html')  Stock Alerts
-        // SALES Dropdown
+              a.dropdown-item(href='stock-alerts.html') Stock Alerts
+        
+        // SALES
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Sales
           ul.dropdown-menu
             li
-              a.dropdown-item(href='records.html')  Sales Records
+              a.dropdown-item(href='records.html') Sales Records
             li
-              a.dropdown-item(href='reports.html')  Sales Reports
-        // FINANCIAL Dropdown
+              a.dropdown-item(href='reports.html') Sales Reports
+        
+        // FINANCIAL (Supplier Credit + Deposit Scheme)
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Financial
           ul.dropdown-menu
             li
-              a.dropdown-item(href='supplier-credit.html')  Supplier Credit
+              a.dropdown-item(href='supplier-credit') Supplier Credit
             li
-              a.dropdown-item(href='deposits.html')  Deposit Scheme
-        // OPERATIONS Dropdown
-        li.nav-item.dropdown
-          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Operations
-          ul.dropdown-menu
-            li
-              a.dropdown-item(href='transport')  Transport Calculator
-            li
-              a.dropdown-item(href='activity-records.html')  Activity Records
+              a.dropdown-item(href='deposits.html') Deposit Scheme
+        
+        // TRANSPORT (only - removed Activity Records)
+        li.nav-item
+          a.nav-link(href='transport')  Transport
+        
         // REPORTS
         li.nav-item
           a.nav-link(href='full-report.html')  Reports
+        
         // LOGOUT
         li.nav-item
-          a.nav-link.text-danger(href='/logout')  Logout
+          a.nav-link.text-danger(href='/logout') Logout
+
 // MAIN CONTENT
 .container-fluid.mt-4
   // Page Title
   .d-flex.justify-content-between.align-items-center.mb-4
-    h2.text-warning  Admin Dashboard
+    h2.text-warning Admin Dashboard
     #currentDate.text-muted
-  // STATS CARDS - Overview of everything
+  
+  // STATS CARDS
   .row.g-4.mb-4
     .col-md-3
       .card.stat-card
         h6  Total Users
         .stat-number= userCount || 24
-        small.text-muted +3 this month
+        small.text-muted registered users
     .col-md-3
       .card.stat-card
-        h6  Total Products
-        .stat-number 45
+        h6  Total Stock Items
+        .stat-number= stockCount || 0
         small.text-muted in inventory
     .col-md-3
       .card.stat-card
-        h6  Today&apos;s Sales
+        h6  Today's Sales
         .stat-number UGX 245K
         small.text-muted +12% from yesterday
     .col-md-3
@@ -107,28 +111,25 @@ nav.navbar.navbar-expand-lg
         h6  Supplier Debt
         .stat-number UGX 3.7M
         small.text-muted due this month
+  
   // SECOND ROW OF STATS
   .row.g-4.mb-4
-    .col-md-3
+    .col-md-4
       .card.stat-card
         h6  Low Stock Items
         .stat-number.text-danger 4
         small.text-muted needs attention
-    .col-md-3
+    .col-md-4
       .card.stat-card
         h6  Deposits Held
         .stat-number UGX 2.5M
         small.text-muted customer deposits
-    .col-md-3
+    .col-md-4
       .card.stat-card
         h6  Monthly Revenue
         .stat-number UGX 18.2M
         small.text-muted this month
-    .col-md-3
-      .card.stat-card
-        h6  Transport Orders
-        .stat-number 12
-        small.text-muted this week
+
   // QUICK LINKS SECTION
   .row.g-4.mb-4
     .col-md-12
@@ -136,25 +137,21 @@ nav.navbar.navbar-expand-lg
         .card-header  Quick Access
         .card-body
           .row
-            .col-md-2.text-center
+            .col-md-3.text-center
               a.btn.btn-gold.w-100.mb-2(href='users')  Users
-            .col-md-2.text-center
-              a.btn.btn-gold.w-100.mb-2(href='products')  Products
-            .col-md-2.text-center
-              a.btn.btn-gold.w-100.mb-2(href='inventorymgt')  Inventory
-            .col-md-2.text-center
-              a.btn.btn-gold.w-100.mb-2(href='supplier-credit.html')  Credit
-            .col-md-2.text-center
+            .col-md-3.text-center
+              a.btn.btn-gold.w-100.mb-2(href='add_stock')  Register Stock
+            .col-md-3.text-center
+              a.btn.btn-gold.w-100.mb-2(href='supplier-credit.html')  Supplier Credit
+            .col-md-3.text-center
               a.btn.btn-gold.w-100.mb-2(href='deposits.html')  Deposits
-            .col-md-2.text-center
-              a.btn.btn-gold.w-100.mb-2(href='full-report.html')  Reports
-  // RECENT ACTIVITY TABLES
+
+  // RECENT USERS
   .row
-    // Recent Users
     .col-md-6
       .card
         .card-header.d-flex.justify-content-between
-          span &#x1F465; Recent Users
+          span  Recent Users
           a.btn.btn-sm.btn-gold(href='users') View All
         .card-body
           table.table
@@ -164,7 +161,6 @@ nav.navbar.navbar-expand-lg
                 th Role
                 th Status
             tbody
-              //- DYNAMIC LOOP - Users from database
               if users && users.length > 0
                 each user in users
                   tr
@@ -172,13 +168,14 @@ nav.navbar.navbar-expand-lg
                     td= user.role
                     td
                       if user.status === 'active'
-                        span.badge.badge-success Active
+                        span.badge.bg-success Active
                       else
-                        span.badge.badge-warning Inactive
+                        span.badge.bg-warning Inactive
               else
                 tr
                   td(colspan='3', class='text-center') No users found
-    // Recent Sales
+    
+    // RECENT SALES
     .col-md-6
       .card
         .card-header.d-flex.justify-content-between
@@ -195,7 +192,7 @@ nav.navbar.navbar-expand-lg
             tbody
               tr
                 td John Otim
-                td Hammer
+                td Cement
                 td UGX 30,000
                 td Today
               tr
@@ -208,20 +205,20 @@ nav.navbar.navbar-expand-lg
                 td Paint
                 td UGX 90,000
                 td Yesterday
-  // Low Stock Alerts
+
+  // LOW STOCK ALERTS
   .row.mt-4
     .col-md-12
       .card
         .card-header.d-flex.justify-content-between
           span  Low Stock Alerts
-          a.btn.btn-sm.btn-gold(href='inventorymgt') Manage Stock
+          a.btn.btn-sm.btn-gold(href='stock-alerts.html') View All
         .card-body
           table.table
             thead
               tr
                 th Product
                 th Current Stock
-                th Min Required
                 th Status
                 th Action
             tbody
@@ -229,30 +226,20 @@ nav.navbar.navbar-expand-lg
                 td Cement
                 td
                   span.text-danger 5
-                td 50
                 td
-                  span.badge.badge-danger CRITICAL
+                  span.badge.bg-danger CRITICAL
                 td
                   button.btn.btn-sm.btn-gold Reorder
               tr
                 td Paint
                 td
                   span.text-danger 8
-                td 30
                 td
-                  span.badge.badge-danger Low
-                td
-                  button.btn.btn-sm.btn-gold Reorder
-              tr
-                td Screws
-                td
-                  span.text-danger 15
-                td 50
-                td
-                  span.badge.badge-warning Warning
+                  span.badge.bg-danger Low
                 td
                   button.btn.btn-sm.btn-gold Reorder
-  // Recent Supplier Credit & Deposits
+
+  // RECENT SUPPLIER CREDIT & DEPOSITS
   .row.mt-4
     .col-md-6
       .card
@@ -273,13 +260,14 @@ nav.navbar.navbar-expand-lg
                 td UGX 2,500,000
                 td May 15
                 td
-                  span.badge.badge-warning Pending
+                  span.badge.bg-warning Pending
               tr
-                td Paint Suppliers
+                td Steel Suppliers
                 td UGX 1,200,000
                 td May 10
                 td
-                  span.badge.badge-warning Pending
+                  span.badge.bg-warning Pending
+    
     .col-md-6
       .card
         .card-header.d-flex.justify-content-between
@@ -304,9 +292,9 @@ nav.navbar.navbar-expand-lg
                 td UGX 300,000
                 td UGX 50,000
                 td UGX 250,000
+
 script.
-  // Display current date
   document.getElementById('currentDate').innerHTML = new Date().toLocaleDateString('en-US', {
-  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
   });
 script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js')

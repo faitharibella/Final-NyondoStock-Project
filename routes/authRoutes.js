@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Registration = require("../model/Registration");
 const passport = require("passport");
+const {isAuthenticated, isAdmin} = require('../middleware/auth');
 
 //Get index page
 router.get("/", (req, res) => {
@@ -42,7 +43,7 @@ router.post("/login", passport.authenticate('local', { failureRedirect: '/login'
 });
 
 // Logout route
-router.get('/logout', (req, res, next) => {
+router.get('/logout', isAuthenticated, (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
     res.redirect('/');
@@ -57,7 +58,7 @@ router.get("/registerform", (req, res) => {
 // Post register
 router.post("/registerpost", async (req, res) => {
   try {
-    const { fullname, email, role, password } = req.body;
+    const { fullname, email, phone, nin, role, password } = req.body;
     
     // Check if user already exists
     let existingUser = await Registration.findOne({
@@ -69,12 +70,22 @@ router.post("/registerpost", async (req, res) => {
       });
     }
     
+    // Validate phone number if provided
+    const phoneRegex = /^\+256[0-9]{9}$/;
+    if (phone && !phoneRegex.test(phone)) {
+      return res.render("registration", {
+        error: "Invalid phone number. Must start with +256 followed by 9 digits (e.g., +256712345678)"
+      });
+    }
+    
     // Create new user with status = 'active'
     const newUser = new Registration({
       fullname,
       email: email.toLowerCase(),
+      phone: phone || null,
+      nin: nin || null,
       role,
-      status: 'active'  // ✅ ADD THIS - default to active
+      status: 'active'
     });
     
     console.log(newUser);

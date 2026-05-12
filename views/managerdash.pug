@@ -3,10 +3,9 @@ head
   meta(charset='UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   title NyondoStock - Manager Dashboard
-  // Bootstrap CSS
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet')
   link(rel='stylesheet' href='css/dashboard.css')
-// Navbar - Manager Dashboard
+
 nav.navbar.navbar-expand-lg
   .container-fluid
     a.navbar-brand.text-warning.fw-bold(href='managerdashboard.html') NyondoStock Manager
@@ -17,56 +16,51 @@ nav.navbar.navbar-expand-lg
         li.nav-item
           a.nav-link.active(href='#') Dashboard
         li.nav-item
-          a.nav-link(href='products') Products
-        li.nav-item
-          a.nav-link(href='inventorymgt.html') Inventory
-        li.nav-item
-          a.nav-link(href='stock-alerts.html') Stock Alerts
-        li.nav-item
-          a.nav-link(href='transport.html') Transport
+          a.nav-link(href='add_stock') Register Stock
         li.nav-item
           a.nav-link(href='full-report.html') Reports
         li.nav-item
           a.nav-link.text-danger(href='/logout') Logout
+
 .container-fluid.mt-4
-  // Page Header with date/time
   .d-flex.justify-content-between.align-items-center.mb-4
     h2.text-warning Manager Dashboard
-    .text-muted April 30, 2026
-  // Dashboard Stats Cards
+    .text-muted= new Date().toLocaleDateString()
+
   .row.g-4.mb-4
     .col-md-3
       .card.text-center
         .card-header.bg-transparent.border-0.pt-3
           h6 Total Products
         .card-body
-          h3.text-warning 1,245
+          h3.text-warning= totalProducts || 0
           small.text-muted in inventory
     .col-md-3
       .card.text-center
         .card-header.bg-transparent.border-0.pt-3
           h6 Available Stock
         .card-body
-          h3.text-info 980
+          h3.text-info= totalStock || 0
           small.text-muted units remaining
     .col-md-3
       .card.text-center
         .card-header.bg-transparent.border-0.pt-3
-          h6 Today&apos;s Sales
+          h6 Today's Sales
         .card-body
-          h3.text-success UGX 245,000
+          h3.text-success UGX #{todaySales || 0}
           small.text-muted +12% from yesterday
     .col-md-3
       .card.text-center
         .card-header.bg-transparent.border-0.pt-3
           h6 Low Stock Alerts
         .card-body
-          h3.text-danger 12
+          h3.text-danger= lowStockCount || 0
           small.text-muted needs attention
-  // LOW STOCK ALERTS SECTION
+
+  // LOW STOCK ALERTS - FROM DATABASE
   .card.mb-4
     .card-header.d-flex.justify-content-between.align-items-center
-      span  Low Stock Alerts (View Only)
+      span Low Stock Alerts (View Only)
       span.badge.bg-danger Needs Reorder
     .card-body
       .table-responsive
@@ -78,34 +72,25 @@ nav.navbar.navbar-expand-lg
               th Minimum Required
               th Action
           tbody
-            tr
-              td Cement
-              td
-                span.text-danger 5 units
-              td 50 units
-              td
-                a.btn.btn-sm.btn-gold(href='#')  Request Reorder
-            tr
-              td Paint
-              td
-                span.text-danger 8 units
-              td 30 units
-              td
-                a.btn.btn-sm.btn-gold(href='#')  Request Reorder
-            tr
-              td Screws
-              td
-                span.text-danger 15 units
-              td 50 units
-              td
-                a.btn.btn-sm.btn-gold(href='#')  Request Reorder
+            if lowStockProducts && lowStockProducts.length > 0
+              each product in lowStockProducts
+                tr
+                  td= product.productName
+                  td
+                    span.text-danger= product.quantity
+                  td 50
+                  td
+                    a.btn.btn-sm.btn-gold(href=`/add_stock`) Request Reorder
+            else
+              tr
+                td(colspan='4', class='text-center text-muted') No low stock items
       small.text-muted Note: Contact admin to approve reorders
-  // PRODUCT MANAGEMENT SECTION
+
+  // PRODUCT MANAGEMENT - FIRST 5 PRODUCTS FROM DATABASE
   .card.mb-4
     .card-header.d-flex.justify-content-between.align-items-center
-      span  Product Management
-      a.btn.btn-gold.btn-sm(href='products')
-        | Add New Product
+      span Product Management
+      a.btn.btn-gold.btn-sm(href='add_stock') Register New Stock
     .card-body
       .table-responsive
         table.table
@@ -115,60 +100,35 @@ nav.navbar.navbar-expand-lg
               th Price (UGX)
               th Quantity
               th Status
-              th Actions
+              th Action
           tbody
-            tr
-              td Hammer
-              td UGX 15,000
-              td 50
-              td
-                span.badge.badge-success In Stock
-              td
-                a.btn.btn-sm.btn-gold(href='#')  Edit
-                a.btn.btn-sm.btn-danger(href='#')  Delete
-            tr
-              td Nails (box)
-              td UGX 8,000
-              td 200
-              td
-                span.badge.badge-success In Stock
-              td
-                a.btn.btn-sm.btn-gold(href='#')  Edit
-                a.btn.btn-sm.btn-danger(href='#')  Delete
-            tr
-              td Cement (bag)
-              td UGX 35,000
-              td
-                span.text-danger 5
-              td
-                span.badge.badge-danger Low Stock
-              td
-                a.btn.btn-sm.btn-gold(href='#')  Edit
-                a.btn.btn-sm.btn-danger(href='#')  Delete
-            tr
-              td Paint (tin)
-              td UGX 30,000
-              td
-                span.text-danger 8
-              td
-                span.badge.badge-danger Low Stock
-              td
-                a.btn.btn-sm.btn-gold(href='#')  Edit
-                a.btn.btn-sm.btn-danger(href='#')  Delete
-            tr
-              td Screws (box)
-              td UGX 5,000
-              td
-                span.text-warning 15
-              td
-                span.badge.badge-warning Low Stock
-              td
-                a.btn.btn-sm.btn-gold(href='#')  Edit
-                a.btn.btn-sm.btn-danger(href='#')  Delete
-  // SALES MONITORING SECTION
+            if recentProducts && recentProducts.length > 0
+              each product in recentProducts
+                tr
+                  td= product.productName
+                  td= 'UGX ' + product.sellingPrice.toLocaleString()
+                  td
+                    if product.quantity < 10
+                      span.text-danger= product.quantity
+                    else
+                      = product.quantity
+                  td
+                    if product.quantity <= 0
+                      span.badge.bg-danger Out of Stock
+                    else if product.quantity < 10
+                      span.badge.bg-danger Low Stock
+                    else
+                      span.badge.bg-success In Stock
+                  td
+                    a.btn.btn-sm.btn-gold(href=`/add_stock`) Manage
+            else
+              tr
+                td(colspan='5', class='text-center text-muted') No products found
+
+  // TODAY'S SALES MONITORING
   .card.mb-4
     .card-header
-      span  Today&apos;s Sales Monitoring
+      span Today's Sales Monitoring
     .card-body
       .table-responsive
         table.table
@@ -180,78 +140,34 @@ nav.navbar.navbar-expand-lg
               th Time
               th Sold By
           tbody
-            tr
-              td Hammer
-              td 5
-              td UGX 75,000
-              td 10:30 AM
-              td Sarah
-            tr
-              td Nails
-              td 20
-              td UGX 160,000
-              td 11:15 AM
-              td John
-            tr
-              td Paint
-              td 3
-              td UGX 90,000
-              td 02:45 PM
-              td Sarah
-            tr
-              td Cement
-              td 2
-              td UGX 70,000
-              td 03:30 PM
-              td John
+            if todaySalesList && todaySalesList.length > 0
+              each sale in todaySalesList
+                tr
+                  td= sale.productName
+                  td= sale.quantity
+                  td= 'UGX ' + sale.totalamount.toLocaleString()
+                  td= sale.createdAt ? sale.createdAt.toLocaleTimeString() : 'N/A'
+                  td= sale.salespersonName || 'Unknown'
+            else
+              tr
+                td(colspan='5', class='text-center text-muted') No sales today
+
   // REPORTS SECTION
   .card.mb-4
     .card-header.d-flex.justify-content-between.align-items-center
-      span  Reports
+      span Reports
       a.btn.btn-sm.btn-gold(href='full-report.html') Generate Stock Report
     .card-body
-      .row.g-4
-        .col-md-6
-          .card.bg-secondary
-            .card-header Stock Distribution
-            .card-body
-              .chart-placeholder
-                p.text-center.mb-0 Stock Chart
-                small.text-muted Cement: 5 | Paint: 8 | Nails: 200 | Hammer: 50
-        .col-md-6
-          .card.bg-secondary
-            .card-header Top Selling Products
-            .card-body
-              .chart-placeholder
-                p.text-center.mb-0 Sales Chart
-                small.text-muted Nails: 45 | Hammer: 12 | Paint: 8 | Cement: 5
-      // Recent Activity Log
       .mt-4
         .card-header Recent Activity
         .card-body(style='max-height: 200px; overflow-y: auto')
           ul.list-unstyled
-            li.mb-2
-              strong Manager
-              |  updated price:
-              span.text-warning Hammer
-              small.text-muted.float-end 1 hour ago
-            li.mb-2
-              strong Salesperson
-              |  made sale: 5x
-              span.text-warning Nails
-              small.text-muted.float-end 3 hours ago
-            li.mb-2
-              strong Manager
-              |  added product:
-              span.text-warning Screws
-              small.text-muted.float-end 1 day ago
-            li.mb-2
-              strong System
-              |  Low stock alert:
-              span.text-warning Cement (5 left)
-              small.text-muted.float-end 2 days ago
-            li.mb-2
-              strong Salesperson
-              |  made sale: 3x
-              span.text-warning Paint
-              small.text-muted.float-end 2 days ago
+            if recentActivities && recentActivities.length > 0
+              each activity in recentActivities
+                li.mb-2
+                  strong= activity.user
+                  | #{activity.action}
+                  span.text-warning= activity.product
+                  small.text-muted.float-end= activity.time
+            else
+              li.mb-2.text-muted No recent activity

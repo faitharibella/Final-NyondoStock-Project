@@ -17,7 +17,7 @@ quantity: {
     type: String
   },
   supplierPhone: {
-    type: Number,
+    type: String,
     required: true,
     match: /^\+256[0-9]{9}$/
   },

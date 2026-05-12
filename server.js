@@ -11,9 +11,9 @@ const connectDb = require('./config/db')
 //Import user model
 const Registration = require('./model/Registration');
 const User = require('./model/User');
-const Product = require('./model/Product');
 const Sales = require('./model/Sales');  
-const Stock = require('./model/Stock')
+const Stock = require('./model/Stock');
+const SupplierCredit = ('./model/SupplierCredit');
 
 // SECTION 2: Instantiations
 const app = express();
@@ -53,10 +53,10 @@ app.use((req,res,next)=>{
 app.use('/', require('./routes/registrationRoutes'));
 app.use('/',require('./routes/authRoutes'));
 app.use('/', require('./routes/dashboardRoutes'));
-app.use('/', require('./routes/productRoutes'));
 app.use('/', require('./routes/salesRoutes'));
 app.use('/', require('./routes/registrationRoutes'));
 app.use('/', require('./routes/stockRoutes'));
+app.use('/', require('./routes/supplierCreditRoutes'));
 
 
 

@@ -1,0 +1,34 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Edit Price
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet')
+  link(rel='stylesheet' href='/css/dashboard.css')
+
+nav.navbar.navbar-expand-lg
+  .container-fluid
+    a.navbar-brand.text-warning(href='/add_stock') NyondoStock
+    a.btn.btn-gold.ms-auto(href='/add_stock') Back
+
+.container.mt-4
+  .row.justify-content-center
+    .col-md-6
+      .card
+        .card-header
+          h4.text-warning Edit Selling Price
+        .card-body
+          form(action='/update-price' method='POST')
+            input(type='hidden' name='id' value=stock._id)
+            .mb-3
+              label.form-label Product Name
+              input.form-control(type='text' value=stock.productName readonly)
+            .mb-3
+              label.form-label Current Price (UGX)
+              input.form-control(type='text' value=stock.sellingPrice readonly)
+            .mb-3
+              label.form-label New Price (UGX)
+              input.form-control(type='number' name='sellingPrice' required)
+            button.btn.btn-gold.w-100(type='submit') Save Price
+
+script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js')

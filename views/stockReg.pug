@@ -5,105 +5,136 @@ head
   title NyondoStock - Stock Registration
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet')
   link(rel='stylesheet' href='/css/dashboard.css')
+
 // Navbar
 nav.navbar.navbar-expand-lg
   .container-fluid
-    a.navbar-brand.text-warning.fw-bold(href='#') NyondoStock Admin
+    a.navbar-brand.text-warning.fw-bold(href='admindashboard.html') NyondoStock Admin
     button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav')
       span.navbar-toggler-icon
     #navbarNav.collapse.navbar-collapse
       ul.navbar-nav.ms-auto
         li.nav-item
-          a.nav-link.text-danger(href='login.html') Logout
+          a.nav-link.text-danger(href='manager') Back 
+
 .container-fluid.mt-4
   // Page Header
   .d-flex.justify-content-between.align-items-center.mb-4
-    h2.text-warning  Stock Registration
-    .text-muted May 6, 2026
+    h2.text-warning Stock Registration
+    .text-muted= new Date().toLocaleDateString()
+
   // Stock Registration Form
   .card.mb-4
     .card-header
-      span  Register New Stock
+      span Register New Stock
     .card-body
-      form#stockForm(action='add_stock' method='post')
+      if error
+        .alert.alert-danger= error
+      if success
+        .alert.alert-success= success
+
+      form(action='/add_stock' method='POST')
         .row
-          // Product Name Dropdown
+          // Product Category Dropdown
           .col-md-6.mb-3
             label.form-label
-              | Product Name 
+              | Product Category
               span.text-warning *
-            select.form-select(name='productname')
-              option(value='') -- Select Product --
-              option(value='1') Cement - CEM IIN
-              option(value='2') Cement - CEM III
-              option(value='3') Iron Bars - 10mm
-              option(value='4') Iron Bars - 12mm
-              option(value='5') Iron Bars - 16mm
-              option(value='6') Nails - 1 inch (5kg pack)
-              option(value='7') Nails - 3 inch (5kg pack)
-              option(value='8') Nails - 4 inch (5kg pack)
-              option(value='9') Nails - 5 inch (5kg pack)
-              option(value='10') Roofing Nails (5kg pack)
-              option(value='11') Wheelbarrow
-              option(value='12') Wire Mesh
-              option(value='13') Barbed Wire - High Tensile
-              option(value='14') Barbed Wire - Low Tensile
-              option(value='15') Iron Sheets - Gauge 28 (Blue)
-              option(value='16') Iron Sheets - Gauge 28 (Red)
-              option(value='17') Iron Sheets - Gauge 28 (Green)
-              option(value='18') Iron Sheets - Gauge 30 (Blue)
+            select.form-select(name='category' required)
+              option(value='') -- Select Category --
+              option(value='Cement') Cement
+              option(value='Iron Bars') Iron Bars
+              option(value='Nails') Nails
+              option(value='Wheelbarrow') Wheelbarrow
+              option(value='Wire Mesh') Wire Mesh
+              option(value='Barbed Wire') Barbed Wire
+              option(value='Iron Sheets') Iron Sheets
+
+          // Product Type Dropdown
+          .col-md-6.mb-3
+            label.form-label
+              | Product Type
+              span.text-warning *
+            select.form-select(name='productType' required)
+              option(value='') -- Select Type --
+              option(value='CEM IIN') CEM IIN
+              option(value='CEM III') CEM III
+              option(value='10mm') 10mm
+              option(value='12mm') 12mm
+              option(value='16mm') 16mm
+              option(value='1 inch (5kg pack)') 1 inch (5kg pack)
+              option(value='3 inch (5kg pack)') 3 inch (5kg pack)
+              option(value='4 inch (5kg pack)') 4 inch (5kg pack)
+              option(value='5 inch (5kg pack)') 5 inch (5kg pack)
+              option(value='Roofing nails (5kg pack)') Roofing nails (5kg pack)
+              option(value='Standard') Standard
+              option(value='High Tensile') High Tensile
+              option(value='Low Tensile') Low Tensile
+              option(value='Gauge 28 (Blue)') Gauge 28 (Blue)
+              option(value='Gauge 28 (Red)') Gauge 28 (Red)
+              option(value='Gauge 28 (Green)') Gauge 28 (Green)
+              option(value='Gauge 30 (Blue)') Gauge 30 (Blue)
+
           // Quantity
           .col-md-3.mb-3
             label.form-label
-              | Quantity 
+              | Quantity
               span.text-warning *
-            input.form-control(type='number' name='quantity' placeholder='Number of units/bags/packs' required='')
+            input.form-control(type='number' name='quantity' placeholder='Number of units/bags/packs' required)
+
           // Unit Cost
           .col-md-3.mb-3
             label.form-label
-              | Unit Cost (UGX) 
+              | Unit Cost (UGX)
               span.text-warning *
-            input.form-control(type='number' name='unitCost' placeholder='Cost per unit' required='')
+            input.form-control(type='number' name='unitCost' placeholder='Cost per unit' required)
+
           // Selling Price
           .col-md-3.mb-3
             label.form-label
-              | Selling Price (UGX) 
+              | Selling Price (UGX)
               span.text-warning *
-            input.form-control(type='number' name='sellingPrice' placeholder='Price to sell' required='')
+            input.form-control(type='number' name='sellingPrice' placeholder='Price to sell' required)
             small.text-muted Must be greater than unit cost
+
           // Supplier Name
           .col-md-3.mb-3
             label.form-label
-              | Supplier Name 
+              | Supplier Name
               span.text-warning *
-            input.form-control(type='text' name='supplierName' placeholder='Enter supplier name' required='')
+            input.form-control(type='text' name='supplierName' placeholder='Enter supplier name' required)
+
           // Supplier Phone
           .col-md-3.mb-3
             label.form-label
-              | Supplier Phone 
+              | Supplier Phone
               span.text-warning *
-            input.form-control(type='tel' name='supplierPhone' placeholder='+256 XXX XXX XXX' pattern='07[0-9]{8}' required='')
+            input.form-control(type='text' name='supplierPhone' placeholder='+256712345678' required)
+
           // Factory Name
           .col-md-3.mb-3
             label.form-label Factory Name
             input.form-control(type='text' name='factoryName' placeholder='Factory/Depot name')
+
           // Payment Status
           .col-md-3.mb-3
             label.form-label
-              | Payment Status 
+              | Payment Status
               span.text-warning *
-            select.form-select(name='paymentStatus' required='')
+            select.form-select(name='paymentStatus' required)
               option(value='cash') Cash at Hand
               option(value='credit') Credit (Pay Later)
+
           // Submit Buttons
           .col-md-12.mt-3
-            button.btn.btn-gold(type='submit')  Save Stock Record
-            button.btn.btn-secondary.ms-2(type='reset')  Reset Form
+            button.btn.btn-gold(type='submit') Save Stock Record
+            button.btn.btn-secondary.ms-2(type='reset') Reset Form
+
   // STOCK RECEIVED TABLE
   .card.mb-4
     .card-header.d-flex.justify-content-between
-      span  Stock Received History
-      button.btn.btn-sm.btn-gold(onclick='window.print()')  Print
+      span Stock Received History
+      button.btn.btn-sm.btn-gold(onclick='window.print()') Print
     .card-body
       .table-responsive
         table.table
@@ -116,39 +147,34 @@ nav.navbar.navbar-expand-lg
               th Selling Price
               th Total Paid
               th Payment Status
+              th Action
           tbody
-            tr
-              td 2026-05-01
-              td Cement - CEM IIN
-              td 500
-              td UGX 28,000
-              td UGX 32,000
-              td UGX 14,000,000
-              td
-                span.badge.bg-success Cash
-            tr
-              td 2026-05-03
-              td Iron Bars - 12mm
-              td 300
-              td UGX 35,000
-              td UGX 42,000
-              td UGX 10,500,000
-              td
-                span.badge.bg-warning.text-dark Credit
-            tr
-              td 2026-05-05
-              td Roofing Nails
-              td 100
-              td UGX 18,000
-              td UGX 22,000
-              td UGX 1,800,000
-              td
-                span.badge.bg-success Cash
+            if stockRecords && stockRecords.length > 0
+              each record in stockRecords
+                tr
+                  td= record.date ? record.date.toLocaleDateString() : 'N/A'
+                  td= record.productName
+                  td= record.quantity
+                  td= 'UGX ' + record.unitCost.toLocaleString()
+                  td= 'UGX ' + record.sellingPrice.toLocaleString()
+                  td= 'UGX ' + (record.quantity * record.unitCost).toLocaleString()
+                  td
+                    if record.paymentStatus === 'cash'
+                      span.badge.bg-success Cash
+                    else
+                      span.badge.bg-warning.text-dark Credit
+                  td
+                    a.btn.btn-sm.btn-gold(href=`/edit-price/${record._id}`) Edit Price
+                    a.btn.btn-sm.btn-danger(href=`/delete-stock/${record._id}` onclick='return confirm("Delete this stock record?")') Delete
+            else
+              tr
+                td(colspan='8', class='text-center text-muted') No stock records yet
+
   // SUPPLIERS TABLE
   .card
     .card-header.d-flex.justify-content-between
-      span &#x1F3ED; Supplier Records
-      button.btn.btn-sm.btn-gold(onclick='window.print()')  Print
+      span Supplier Records
+      button.btn.btn-sm.btn-gold(onclick='window.print()') Print
     .card-body
       .table-responsive
         table.table
@@ -161,27 +187,22 @@ nav.navbar.navbar-expand-lg
               th Last Supply Date
               th Payment Status
           tbody
-            tr
-              td Hima Cement Ltd
-              td 0772123456
-              td Hima Factory
-              td Cement CEM IIN, CEM III
-              td 2026-05-01
-              td
-                span.badge.bg-success Paid
-            tr
-              td Roofings Ltd
-              td 0414123456
-              td Roofings Factory
-              td Iron Bars, Iron Sheets
-              td 2026-05-03
-              td
-                span.badge.bg-warning.text-dark Pending
-            tr
-              td Steel &amp; Wire Suppliers
-              td 0755123456
-              td Jinja Depot
-              td Nails, Wire Mesh, Barbed Wire
-              td 2026-05-05
-              td
-                span.badge.bg-success Paid
+            if suppliers && suppliers.length > 0
+              each supplier in suppliers
+                tr
+                  td= supplier._id
+                  td= supplier.supplierPhone
+                  td= supplier.factoryName || 'N/A'
+                  td= supplier.productsSupplied ? supplier.productsSupplied.join(', ') : 'N/A'
+                  td= supplier.lastSupplyDate ? supplier.lastSupplyDate.toLocaleDateString() : 'N/A'
+                  td
+                    if supplier.paymentStatus === 'paid'
+                      span.badge.bg-success Paid
+                    else
+                      span.badge.bg-warning.text-dark Pending
+            else
+              tr
+                td(colspan='6', class='text-center text-muted') No supplier records yet
+
+// Bootstrap JS
+script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js')

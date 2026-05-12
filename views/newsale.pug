@@ -14,7 +14,7 @@ nav.navbar.navbar-expand-lg
     #navbarNav.collapse.navbar-collapse
       ul.navbar-nav.ms-auto
         li.nav-item
-          a.nav-link.text-danger(href='sales-persondash') Back
+          a.nav-link.text-danger(href='salesperson') Back
 .container.mt-4
   .row.justify-content-center
     .col-md-6
@@ -32,6 +32,13 @@ nav.navbar.navbar-expand-lg
             .mb-3
               label.form-label Customer Phone (Optional)
               input.form-control(type='tel' name='customerPhone' placeholder='07XX XXX XXX')
+            
+            // NIN Number - ADDED for deposit scheme customers
+            .mb-3
+              label.form-label NIN Number (National ID)
+              input.form-control(type='text' name='ninNumber' placeholder='Enter NIN number')
+              small.text-muted Required for deposit scheme customers (cement, iron sheets, iron bars only)
+            
             // Product Selection
             .mb-3
               label.form-label
@@ -41,25 +48,43 @@ nav.navbar.navbar-expand-lg
                 option(value='') -- Select Product --
                 if products && products.length > 0
                   each product in products
-                    option(value=product._id, data-price=product.price, data-stock=product.quantity)
-                      = product.productname + ' - UGX ' + product.price + ' (Stock: ' + product.quantity + ')'
+                    option(value=product._id, data-price=product.sellingPrice, data-stock=product.quantity, data-category=product.category)
+                      = product.productName + ' - UGX ' + product.sellingPrice + ' (Stock: ' + product.quantity + ')'
                 else
                   option(value='' disabled) No products available
+            
+            // Deposit Scheme Customer - ADDED
+            .mb-3
+              label.form-label Deposit Scheme Customer
+              select.form-select(name='isDepositCustomer')
+                option(value='no') No
+                option(value='yes') Yes (Use deposit balance)
+            
             .mb-3
               label.form-label
                 | Quantity 
                 span.text-warning *
               input.form-control(type='number' name='quantity' id='quantity' value='1' min='1' required='')
+            
             // Price and Total (readonly)
             .mb-3
               label.form-label Unit Price (UGX)
               input#unitPrice.form-control(type='number' name='unitprice' readonly='' placeholder='Price will appear here')
+            
+            // DISTANCE FIELD - ADDED ONLY
+            .mb-3
+              label.form-label Distance (Kilometers)
+              input#distance.form-control(type='number' name='distance' placeholder='Enter distance from shop' value='0')
+              small.text-muted Free delivery within 10km when total is 500,000 UGX or more. Otherwise 30,000 UGX.
+            
             .mb-3
               label.form-label Transport Fee (UGX)
-              input.form-control(type='number' name='transportFee' id='transportFee' placeholder='Optional transport cost' value='0')
+              input.form-control(type='number' name='transportFee' readonly='' id='transportFee' placeholder='Free if within 10km and total >= 500,000' value='0')
+            
             .mb-3
               label.form-label Total Amount (UGX)
               input#totalAmount.form-control(type='number' name='totalamount' readonly='' placeholder='Total will be calculated')
+            
             // Payment Information
             .mb-3
               label.form-label
@@ -68,7 +93,7 @@ nav.navbar.navbar-expand-lg
               input.form-control(type='number' name='amountPaid' id='amountPaid' placeholder='Enter amount paid' required='')
             .mb-3
               label.form-label Change (UGX)
-              input#change.form-control(type='number' name='change' readonly='' placeholder='Change will be calculated')
+              input#change.form-control(type='number' name='change' placeholder='Change will be calculated')
             .mb-3
               label.form-label Payment Method
               select.form-select(name='paymentMethod')
