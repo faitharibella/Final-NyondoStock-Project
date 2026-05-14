@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Registration = require("../model/Registration");
 const passport = require("passport");
+const crypto = require('crypto');
 const {isAuthenticated, isAdmin} = require('../middleware/auth');
 
 //Get index page
@@ -100,6 +101,94 @@ router.post("/registerpost", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.render("registration", { error: error.message });
+  }
+});
+
+//Get forgot password page
+router.get('/forgot-password', async(req,res)=>{
+  res.render('forgot-password');
+});
+
+//post -send reset link
+router.post('/forgot-password', async (req,res)=>{
+  try {
+    const {email} = req.body;
+    const user = await Registration.findOne({email: email.toLowerCase()});
+
+    if(!user){
+      return res.render('forgot-password', {error: 'No account found with that email address'});
+    }
+
+    //Creating a reset token
+    const token = crypto.randomBytes(20).toString('hex');
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; //1hour
+    await user.save();
+
+    //In the real app, send email here. for now, show the link
+    const resetLink = `${req.get('host')}/reset-password/${token}`;
+
+    res.render('forgot-password', {
+      success: `Password reset link has been generated. Use the link to reset your password: ${resetLink}`
+    });
+  } catch (error) {
+    console.error(error);
+    res.render('forgot-password', {error: 'Something went wrong.Please try again'});
+  }
+});
+
+// GET - Reset password page
+router.get('/reset-password/:token', async (req, res) => {
+  try {
+    const user = await Registration.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+    
+    if (!user) {
+      return res.redirect('/forgot-password?error=Password reset token is invalid or has expired');
+    }
+    
+    res.render('reset-password', { token: req.params.token });
+  } catch (error) {
+    res.redirect('/forgot-password?error=Something went wrong');
+  }
+});
+
+// POST - Reset password
+router.post('/reset-password/:token', async (req, res) => {
+  try {
+    const { password } = req.body;
+    
+    const user = await Registration.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+    
+    if (!user) {
+      return res.redirect('/forgot-password?error=Password reset token is invalid or has expired');
+    }
+    
+    // Set new password
+    user.setPassword(password, async (err) => {
+      if (err) {
+        return res.render('reset-password', { 
+          token: req.params.token, 
+          error: 'Password could not be set. Please try again.' 
+        });
+      }
+      
+      user.resetPasswordToken = null;
+      user.resetPasswordExpires = null;
+      await user.save();
+      
+      res.redirect('/login?success=Password has been reset successfully. Please login with your new password.');
+    });
+  } catch (error) {
+    res.render('reset-password', { 
+      token: req.params.token, 
+      error: 'Something went wrong. Please try again.' 
+    });
   }
 });
 

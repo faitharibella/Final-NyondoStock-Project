@@ -14,6 +14,7 @@ const User = require('./model/User');
 const Sales = require('./model/Sales');  
 const Stock = require('./model/Stock');
 const SupplierCredit = ('./model/SupplierCredit');
+const Deposit = ('./model/Deposit');
 
 // SECTION 2: Instantiations
 const app = express();
@@ -57,6 +58,8 @@ app.use('/', require('./routes/salesRoutes'));
 app.use('/', require('./routes/registrationRoutes'));
 app.use('/', require('./routes/stockRoutes'));
 app.use('/', require('./routes/supplierCreditRoutes'));
+app.use('/', require('./routes/depositRoutes'));
+app.use('/', require('./routes/reportRoutes'));
 
 
 

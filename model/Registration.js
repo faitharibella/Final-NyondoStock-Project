@@ -31,7 +31,15 @@ const registrationSchema = new mongoose.Schema({
     type: String,
     enum: ['active', 'inactive'],
     default: 'active'
-  }
+  },
+  resetPasswordToken: {
+  type: String,
+  default: null
+},
+resetPasswordExpires: {
+  type: Date,
+  default: null
+}
 });
 
 registrationSchema.plugin(passportLocalMongoose, {

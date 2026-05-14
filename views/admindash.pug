@@ -1,7 +1,7 @@
 doctype html
 head
   meta(charset='UTF-8')
-  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes')
   title NyondoStock - Admin Dashboard
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet')
   link(rel='stylesheet' href='/css/dashboard.css')
@@ -21,6 +21,26 @@ head
       display: block;
       margin-top: 0;
     }
+    @media (max-width: 768px) {
+      .card-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start !important;
+      }
+      .stat-number {
+        font-size: 24px;
+      }
+      .table {
+        font-size: 12px;
+      }
+      .btn-sm {
+        padding: 4px 8px;
+        font-size: 10px;
+      }
+      .navbar-brand {
+        font-size: 1rem;
+      }
+    }
 
 // ADMIN NAVBAR
 nav.navbar.navbar-expand-lg
@@ -30,268 +50,251 @@ nav.navbar.navbar-expand-lg
       span.navbar-toggler-icon
     #navbarNav.collapse.navbar-collapse
       ul.navbar-nav.ms-auto
-        // Dashboard
         li.nav-item
           a.nav-link.active(href='#') Dashboard
-        
-        // USERS
         li.nav-item.dropdown
-          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Users
+          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown') Users
           ul.dropdown-menu
             li
               a.dropdown-item(href='users') User Management
             li
               a.dropdown-item(href='registerform') Register New User  
-        
-        // STOCK (Products only - removed Inventory)
         li.nav-item.dropdown
-          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Stock
+          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown') Stock
           ul.dropdown-menu
             li
               a.dropdown-item(href='add_stock') Register Stock
             li
               a.dropdown-item(href='stock-alerts.html') Stock Alerts
-        
-        // SALES
         li.nav-item.dropdown
-          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Sales
+          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown') Sales
           ul.dropdown-menu
             li
               a.dropdown-item(href='records.html') Sales Records
             li
               a.dropdown-item(href='reports.html') Sales Reports
-        
-        // FINANCIAL (Supplier Credit + Deposit Scheme)
         li.nav-item.dropdown
-          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown')  Financial
+          a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown') Financial
           ul.dropdown-menu
             li
               a.dropdown-item(href='supplier-credit') Supplier Credit
             li
-              a.dropdown-item(href='deposits.html') Deposit Scheme
-        
-        // TRANSPORT (only - removed Activity Records)
+              a.dropdown-item(href='deposit') Deposit Scheme
         li.nav-item
-          a.nav-link(href='transport')  Transport
-        
-        // REPORTS
-        li.nav-item
-          a.nav-link(href='full-report.html')  Reports
-        
-        // LOGOUT
+          a.nav-link(href='reports') Reports
         li.nav-item
           a.nav-link.text-danger(href='/logout') Logout
 
 // MAIN CONTENT
 .container-fluid.mt-4
   // Page Title
-  .d-flex.justify-content-between.align-items-center.mb-4
+  .d-flex.justify-content-between.align-items-center.mb-4.flex-wrap.gap-2
     h2.text-warning Admin Dashboard
     #currentDate.text-muted
   
-  // STATS CARDS
+  // STATS CARDS - USING DYNAMIC DATA FROM ROUTE
   .row.g-4.mb-4
-    .col-md-3
+    .col-6.col-md-3
       .card.stat-card
-        h6  Total Users
-        .stat-number= userCount || 24
-        small.text-muted registered users
-    .col-md-3
+        h6 Total Users
+        .stat-number= userCount || 0
+        small.text-muted registered
+    .col-6.col-md-3
       .card.stat-card
-        h6  Total Stock Items
+        h6 Total Stock Items
         .stat-number= stockCount || 0
-        small.text-muted in inventory
-    .col-md-3
+        small.text-muted in stock
+    .col-6.col-md-3
       .card.stat-card
-        h6  Today's Sales
-        .stat-number UGX 245K
-        small.text-muted +12% from yesterday
-    .col-md-3
+        h6 Today's Sales
+        .stat-number UGX #{todaySales ? todaySales.toLocaleString() : 0}
+        small.text-muted today
+    .col-6.col-md-3
       .card.stat-card
-        h6  Supplier Debt
-        .stat-number UGX 3.7M
-        small.text-muted due this month
+        h6 Supplier Debt
+        .stat-number UGX #{supplierDebt ? supplierDebt.toLocaleString() : 0}
+        small.text-muted due
   
   // SECOND ROW OF STATS
   .row.g-4.mb-4
-    .col-md-4
+    .col-6.col-md-4
       .card.stat-card
-        h6  Low Stock Items
-        .stat-number.text-danger 4
+        h6 Low Stock Items
+        .stat-number.text-danger= lowStockCount || 0
         small.text-muted needs attention
-    .col-md-4
+    .col-6.col-md-4
       .card.stat-card
-        h6  Deposits Held
-        .stat-number UGX 2.5M
-        small.text-muted customer deposits
-    .col-md-4
+        h6 Deposits Held
+        .stat-number UGX 0
+        small.text-muted deposits
+    .col-6.col-md-4
       .card.stat-card
-        h6  Monthly Revenue
-        .stat-number UGX 18.2M
+        h6 Monthly Revenue
+        .stat-number UGX #{monthlyRevenue ? monthlyRevenue.toLocaleString() : 0}
         small.text-muted this month
 
   // QUICK LINKS SECTION
   .row.g-4.mb-4
     .col-md-12
       .card
-        .card-header  Quick Access
+        .card-header Quick Access
         .card-body
-          .row
-            .col-md-3.text-center
-              a.btn.btn-gold.w-100.mb-2(href='users')  Users
-            .col-md-3.text-center
-              a.btn.btn-gold.w-100.mb-2(href='add_stock')  Register Stock
-            .col-md-3.text-center
-              a.btn.btn-gold.w-100.mb-2(href='supplier-credit.html')  Supplier Credit
-            .col-md-3.text-center
-              a.btn.btn-gold.w-100.mb-2(href='deposits.html')  Deposits
+          .row.g-2
+            .col-6.col-md-3.text-center
+              a.btn.btn-gold.w-100.mb-2(href='users') Users
+            .col-6.col-md-3.text-center
+              a.btn.btn-gold.w-100.mb-2(href='add_stock') Register Stock
+            .col-6.col-md-3.text-center
+              a.btn.btn-gold.w-100.mb-2(href='supplier-credit') Supplier Credit
+            .col-6.col-md-3.text-center
+              a.btn.btn-gold.w-100.mb-2(href='deposits.html') Deposits
 
   // RECENT USERS
   .row
     .col-md-6
       .card
-        .card-header.d-flex.justify-content-between
-          span  Recent Users
+        .card-header.d-flex.justify-content-between.flex-wrap.gap-2
+          span Recent Users
           a.btn.btn-sm.btn-gold(href='users') View All
         .card-body
-          table.table
-            thead
-              tr
-                th Name
-                th Role
-                th Status
-            tbody
-              if users && users.length > 0
-                each user in users
-                  tr
-                    td= user.fullname
-                    td= user.role
-                    td
-                      if user.status === 'active'
-                        span.badge.bg-success Active
-                      else
-                        span.badge.bg-warning Inactive
-              else
+          .table-responsive
+            table.table
+              thead
                 tr
-                  td(colspan='3', class='text-center') No users found
+                  th Name
+                  th Role
+                  th Status
+              tbody
+                if users && users.length > 0
+                  each user in users
+                    tr
+                      td= user.fullname
+                      td= user.role
+                      td
+                        if user.status === 'active'
+                          span.badge.bg-success Active
+                        else
+                          span.badge.bg-warning Inactive
+                else
+                  tr
+                    td(colspan='3', class='text-center') No users found
     
-    // RECENT SALES
+    // RECENT SALES - UPDATED TO USE DATABASE DATA
     .col-md-6
       .card
-        .card-header.d-flex.justify-content-between
-          span  Recent Sales
+        .card-header.d-flex.justify-content-between.flex-wrap.gap-2
+          span Recent Sales
           a.btn.btn-sm.btn-gold(href='records.html') View All
         .card-body
-          table.table
-            thead
-              tr
-                th Customer
-                th Product
-                th Amount
-                th Date
-            tbody
-              tr
-                td John Otim
-                td Cement
-                td UGX 30,000
-                td Today
-              tr
-                td Mary Achieng
-                td Nails
-                td UGX 40,000
-                td Today
-              tr
-                td Peter Okoth
-                td Paint
-                td UGX 90,000
-                td Yesterday
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th Customer
+                  th Product
+                  th Amount
+                  th Date
+              tbody
+                if recentSales && recentSales.length > 0
+                  each sale in recentSales
+                    tr
+                      td= sale.customerName
+                      td= sale.productName
+                      td= 'UGX ' + sale.totalamount.toLocaleString()
+                      td= sale.createdAt ? sale.createdAt.toLocaleDateString() : 'N/A'
+                else
+                  tr
+                    td(colspan='4', class='text-center text-muted') No recent sales
 
   // LOW STOCK ALERTS
   .row.mt-4
     .col-md-12
       .card
-        .card-header.d-flex.justify-content-between
-          span  Low Stock Alerts
+        .card-header.d-flex.justify-content-between.flex-wrap.gap-2
+          span Low Stock Alerts
           a.btn.btn-sm.btn-gold(href='stock-alerts.html') View All
         .card-body
-          table.table
-            thead
-              tr
-                th Product
-                th Current Stock
-                th Status
-                th Action
-            tbody
-              tr
-                td Cement
-                td
-                  span.text-danger 5
-                td
-                  span.badge.bg-danger CRITICAL
-                td
-                  button.btn.btn-sm.btn-gold Reorder
-              tr
-                td Paint
-                td
-                  span.text-danger 8
-                td
-                  span.badge.bg-danger Low
-                td
-                  button.btn.btn-sm.btn-gold Reorder
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th Product
+                  th Stock
+                  th Status
+                  th Action
+              tbody
+                tr
+                  td Cement
+                  td
+                    span.text-danger 5
+                  td
+                    span.badge.bg-danger CRITICAL
+                  td
+                    button.btn.btn-sm.btn-gold Reorder
+                tr
+                  td Paint
+                  td
+                    span.text-danger 8
+                  td
+                    span.badge.bg-danger Low
+                  td
+                    button.btn.btn-sm.btn-gold Reorder
 
   // RECENT SUPPLIER CREDIT & DEPOSITS
   .row.mt-4
     .col-md-6
       .card
-        .card-header.d-flex.justify-content-between
-          span  Recent Supplier Credit
-          a.btn.btn-sm.btn-gold(href='supplier-credit.html') View All
+        .card-header.d-flex.justify-content-between.flex-wrap.gap-2
+          span Recent Supplier Credit
+          a.btn.btn-sm.btn-gold(href='supplier-credit') View All
         .card-body
-          table.table
-            thead
-              tr
-                th Supplier
-                th Amount Owed
-                th Due Date
-                th Status
-            tbody
-              tr
-                td Cement Ltd
-                td UGX 2,500,000
-                td May 15
-                td
-                  span.badge.bg-warning Pending
-              tr
-                td Steel Suppliers
-                td UGX 1,200,000
-                td May 10
-                td
-                  span.badge.bg-warning Pending
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th Supplier
+                  th Owed
+                  th Due
+                  th Status
+              tbody
+                tr
+                  td Cement Ltd
+                  td UGX 2,500,000
+                  td May 15
+                  td
+                    span.badge.bg-warning Pending
+                tr
+                  td Steel Suppliers
+                  td UGX 1,200,000
+                  td May 10
+                  td
+                    span.badge.bg-warning Pending
     
     .col-md-6
       .card
-        .card-header.d-flex.justify-content-between
-          span  Recent Customer Deposits
+        .card-header.d-flex.justify-content-between.flex-wrap.gap-2
+          span Recent Customer Deposits
           a.btn.btn-sm.btn-gold(href='deposits.html') View All
         .card-body
-          table.table
-            thead
-              tr
-                th Customer
-                th Deposited
-                th Used
-                th Balance
-            tbody
-              tr
-                td John Otim
-                td UGX 500,000
-                td UGX 200,000
-                td UGX 300,000
-              tr
-                td Mary Achieng
-                td UGX 300,000
-                td UGX 50,000
-                td UGX 250,000
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th Customer
+                  th Deposited
+                  th Used
+                  th Balance
+              tbody
+                tr
+                  td John Otim
+                  td UGX 500,000
+                  td UGX 200,000
+                  td UGX 300,000
+                tr
+                  td Mary Achieng
+                  td UGX 300,000
+                  td UGX 50,000
+                  td UGX 250,000
 
 script.
   document.getElementById('currentDate').innerHTML = new Date().toLocaleDateString('en-US', {

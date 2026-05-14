@@ -1,0 +1,214 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title NyondoStock - Reports
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet')
+  link(rel='stylesheet' href='/css/dashboard.css')
+
+nav.navbar.navbar-expand-lg
+  .container-fluid
+    a.navbar-brand.text-warning.fw-bold(href='#') NyondoStock
+    button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav')
+      span.navbar-toggler-icon
+    #navbarNav.collapse.navbar-collapse
+      ul.navbar-nav.ms-auto
+        if user && user.role === 'Admin'
+          li.nav-item
+            a.nav-link.text-danger(href='admin') Back
+        else if user && user.role === 'Manager'
+          li.nav-item
+            a.nav-link.text-danger(href='manager') Back
+        else
+          li.nav-item
+            a.nav-link.text-danger(href='login') Back
+
+.container-fluid.mt-4
+  .d-flex.justify-content-between.align-items-center.mb-4
+    h2.text-warning Reports Dashboard
+    .text-muted= new Date().toLocaleDateString()
+
+  // Filter Buttons
+  .card.mb-4
+    .card-header Filter Reports
+    .card-body
+      .row
+        .col-md-3.mb-2
+          button.btn.btn-gold.w-100(onclick='filterReport("daily")') Daily
+        .col-md-3.mb-2
+          button.btn.btn-gold.w-100(onclick='filterReport("weekly")') Weekly
+        .col-md-3.mb-2
+          button.btn.btn-gold.w-100(onclick='filterReport("monthly")') Monthly
+        .col-md-3.mb-2
+          button.btn.btn-gold.w-100(onclick='filterReport("all")') All Time
+
+  // SALES REPORT SECTION
+  .card.mb-4
+    .card-header Sales Report
+    .card-body
+      .row.g-4.mb-4
+        .col-md-3
+          .card.bg-secondary
+            .card-body.text-center
+              h6 Total Sales
+              h3.text-warning UGX #{totalSales || 0}
+        .col-md-3
+          .card.bg-secondary
+            .card-body.text-center
+              h6 Items Sold
+              h3.text-info #{totalItems || 0}
+        .col-md-3
+          .card.bg-secondary
+            .card-body.text-center
+              h6 Transactions
+              h3.text-success #{totalTransactions || 0}
+        .col-md-3
+          .card.bg-secondary
+            .card-body.text-center
+              h6 Average Sale
+              h3.text-warning UGX #{avgSale || 0}
+      
+      h6.text-warning.mb-3 Top Selling Products
+      .table-responsive
+        table.table
+          thead
+            tr
+              th Product
+              th Units Sold
+              th Revenue (UGX)
+          tbody
+            if topProducts && topProducts.length > 0
+              each product in topProducts
+                tr
+                  td= product.productName
+                  td= product.totalSold
+                  td= 'UGX ' + product.revenue.toLocaleString()
+            else
+              tr
+                td(colspan='3') No sales data available
+
+  // STOCK REPORT SECTION
+  .card.mb-4
+    .card-header Stock Report
+    .card-body
+      .row.g-4.mb-4
+        .col-md-4
+          .card.bg-secondary
+            .card-body.text-center
+              h6 Total Products
+              h3.text-warning #{totalProducts || 0}
+        .col-md-4
+          .card.bg-secondary
+            .card-body.text-center
+              h6 Total Units in Stock
+              h3.text-info #{totalUnits || 0}
+        .col-md-4
+          .card.bg-secondary
+            .card-body.text-center
+              h6 Low Stock Items
+              h3.text-danger #{lowStockCount || 0}
+      
+      h6.text-warning.mb-3 Current Stock Levels
+      .table-responsive
+        table.table
+          thead
+            tr
+              th Product Name
+              th Quantity
+              th Status
+          tbody
+            if stockItems && stockItems.length > 0
+              each item in stockItems
+                tr
+                  td= item.productName
+                  td= item.quantity
+                  td
+                    if item.quantity <= 0
+                      span.badge.bg-danger Out of Stock
+                    else if item.quantity < 10
+                      span.badge.bg-warning.text-dark Low Stock
+                    else
+                      span.badge.bg-success In Stock
+            else
+              tr
+                td(colspan='3') No stock data available
+
+  // RESTOCK HISTORY TABLE (Stock Received)
+  .card.mb-4
+    .card-header Restock History
+    .card-body
+      .table-responsive
+        table.table
+          thead
+            tr
+              th Date
+              th Product
+              th Quantity Added
+              th Unit Cost
+              th Supplier
+          tbody
+            if restockHistory && restockHistory.length > 0
+              each restock in restockHistory
+                tr
+                  td= restock.date ? restock.date.toLocaleDateString() : 'N/A'
+                  td= restock.productName
+                  td= restock.quantity
+                  td= 'UGX ' + restock.unitCost.toLocaleString()
+                  td= restock.supplierName
+            else
+              tr
+                td(colspan='5') No restock history available
+
+  if user && user.role === 'Admin'
+    // FINANCIAL REPORT (Admin only)
+    .card.mb-4
+      .card-header Financial Report
+      .card-body
+        .row.g-4.mb-4
+          .col-md-4
+            .card.bg-secondary
+              .card-body.text-center
+                h6 Total Revenue
+                h3.text-warning UGX #{totalRevenue || 0}
+          .col-md-4
+            .card.bg-secondary
+              .card-body.text-center
+                h6 Supplier Debt
+                h3.text-danger UGX #{supplierDebt || 0}
+          .col-md-4
+            .card.bg-secondary
+              .card-body.text-center
+                h6 Customer Deposits
+                h3.text-success UGX #{totalDeposits || 0}
+    
+    // USER PERFORMANCE REPORT (Admin only)
+    .card
+      .card-header User Performance Report
+      .card-body
+        .table-responsive
+          table.table
+            thead
+              tr
+                th Salesperson
+                th Total Sales (UGX)
+                th Items Sold
+                th Commission (5%)
+            tbody
+              if userPerformance && userPerformance.length > 0
+                each salesperson in userPerformance
+                  tr
+                    td= salesperson.fullname
+                    td= 'UGX ' + salesperson.totalSales.toLocaleString()
+                    td= salesperson.totalItems
+                    td= 'UGX ' + salesperson.commission.toLocaleString()
+              else
+                tr
+                  td(colspan='4') No user performance data available
+
+script.
+  function filterReport(period) {
+    var currentUrl = window.location.href.split('?')[0];
+    window.location.href = currentUrl + '?period=' + period;
+  }
+
+script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js')
