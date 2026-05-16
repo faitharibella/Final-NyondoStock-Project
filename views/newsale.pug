@@ -20,20 +20,20 @@ nav.navbar.navbar-expand-lg
     .col-md-6
       .card
         .card-header
-          h4.text-warning.mb-0  Record New Sale
+          h4.text-warning.mb-0 Record New Sale
         .card-body
-          form(action='sales' method='post')
+          form(action='/sales' method='post')
             // Customer Information
             .mb-3
               label.form-label
                 | Customer Name 
                 span.text-warning *
-              input.form-control(type='text' name='customerName' placeholder='Enter customer name' required='')
+              input.form-control(type='text' name='customerName' placeholder='Enter customer name' required)
             .mb-3
               label.form-label Customer Phone (Optional)
               input.form-control(type='tel' name='customerPhone' placeholder='07XX XXX XXX')
             
-            // NIN Number - ADDED for deposit scheme customers
+            // NIN Number
             .mb-3
               label.form-label NIN Number (National ID)
               input.form-control(type='text' name='ninNumber' placeholder='Enter NIN number')
@@ -44,7 +44,7 @@ nav.navbar.navbar-expand-lg
               label.form-label
                 | Select Product 
                 span.text-warning *
-              select.form-select(name='productId' id='productSelect' required='')
+              select.form-select(name='productId' id='productSelect' required)
                 option(value='') -- Select Product --
                 if products && products.length > 0
                   each product in products
@@ -53,7 +53,7 @@ nav.navbar.navbar-expand-lg
                 else
                   option(value='' disabled) No products available
             
-            // Deposit Scheme Customer - ADDED
+            // Deposit Scheme Customer
             .mb-3
               label.form-label Deposit Scheme Customer
               select.form-select(name='isDepositCustomer')
@@ -64,36 +64,33 @@ nav.navbar.navbar-expand-lg
               label.form-label
                 | Quantity 
                 span.text-warning *
-              input.form-control(type='number' name='quantity' id='quantity' value='1' min='1' required='')
+              input.form-control(type='number' name='quantity' id='quantity' value='1' min='1' required)
             
-            // Price and Total (readonly)
+            // Unit Price
             .mb-3
               label.form-label Unit Price (UGX)
-              input#unitPrice.form-control(type='number' name='unitprice' readonly='' placeholder='Price will appear here')
+              input#unitPrice.form-control(type='number' name='unitprice' readonly placeholder='Price will appear here')
             
-            // DISTANCE FIELD - ADDED ONLY
+            // Distance Field
             .mb-3
               label.form-label Distance (Kilometers)
               input#distance.form-control(type='number' name='distance' placeholder='Enter distance from shop' value='0')
               small.text-muted Free delivery within 10km when total is 500,000 UGX or more. Otherwise 30,000 UGX.
             
-            .mb-3
-              label.form-label Transport Fee (UGX)
-              input.form-control(type='number' name='transportFee' readonly='' id='transportFee' placeholder='Free if within 10km and total >= 500,000' value='0')
-            
+            // Total Amount
             .mb-3
               label.form-label Total Amount (UGX)
-              input#totalAmount.form-control(type='number' name='totalamount' readonly='' placeholder='Total will be calculated')
+              input#totalAmount.form-control(type='number' name='totalamount' readonly placeholder='Total will be calculated')
             
             // Payment Information
             .mb-3
               label.form-label
                 | Amount Paid (UGX) 
                 span.text-warning *
-              input.form-control(type='number' name='amountPaid' id='amountPaid' placeholder='Enter amount paid' required='')
+              input.form-control(type='number' name='amountPaid' id='amountPaid' placeholder='Enter amount paid' required)
             .mb-3
               label.form-label Change (UGX)
-              input#change.form-control(type='number' name='change' placeholder='Change will be calculated')
+              input#change.form-control(type='number' name='change' readonly placeholder='Change will be calculated')
             .mb-3
               label.form-label Payment Method
               select.form-select(name='paymentMethod')
@@ -101,7 +98,54 @@ nav.navbar.navbar-expand-lg
                 option Mobile Money
                 option Bank Transfer
                 option Credit
-            button.btn.btn-gold.w-100(type='submit')  Complete Sale
-// Minimal JavaScript for calculations
-script(src='/Js/newsale.js')
+            button.btn.btn-gold.w-100(type='submit') Complete Sale
+
+// JavaScript for instant calculations
+script.
+  const productSelect = document.getElementById('productSelect');
+  const quantityInput = document.getElementById('quantity');
+  const distanceInput = document.getElementById('distance');
+  const amountPaidInput = document.getElementById('amountPaid');
+  const unitPriceField = document.getElementById('unitPrice');
+  const totalAmountField = document.getElementById('totalAmount');
+  const changeField = document.getElementById('change');
+
+  function calculateAll() {
+    // Get selected product price
+    const selectedOption = productSelect.options[productSelect.selectedIndex];
+    const price = selectedOption && selectedOption.dataset.price ? parseFloat(selectedOption.dataset.price) : 0;
+    unitPriceField.value = price;
+    
+    // Get quantity
+    const quantity = parseInt(quantityInput.value) || 0;
+    const distance = parseFloat(distanceInput.value) || 0;
+    
+    // Calculate subtotal
+    const subtotal = price * quantity;
+    
+    // Calculate transport fee
+    let transport = 30000;
+    if (distance <= 10 && subtotal >= 500000) {
+      transport = 0;
+    }
+    
+    // Calculate total
+    const total = subtotal + transport;
+    totalAmountField.value = total;
+    
+    // Calculate change
+    const amountPaid = parseFloat(amountPaidInput.value) || 0;
+    const change = amountPaid - total;
+    changeField.value = change >= 0 ? change : 0;
+  }
+
+  // Event listeners
+  productSelect.addEventListener('change', calculateAll);
+  quantityInput.addEventListener('input', calculateAll);
+  distanceInput.addEventListener('input', calculateAll);
+  amountPaidInput.addEventListener('input', calculateAll);
+  
+  // Run once on page load
+  calculateAll();
+
 script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js')

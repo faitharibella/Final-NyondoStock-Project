@@ -76,11 +76,29 @@ router.get('/reports', isAuthenticated, async (req, res) => {
       }
     ]);
     
-    // STOCK DATA
-    const stockItems = await Stock.find({});
-    const totalProducts = stockItems.length;
-    const totalUnits = stockItems.reduce((sum, item) => sum + item.quantity, 0);
-    const lowStockCount = stockItems.filter(item => item.quantity < 10).length;
+    // STOCK DATA - AGGREGATED (sum quantities by product)
+    const stockSummary = await Stock.aggregate([
+      {
+        $group: {
+          _id: '$productName',
+          totalQuantity: { $sum: '$quantity' },
+          sellingPrice: { $first: '$sellingPrice' }
+        }
+      },
+      {
+        $project: {
+          productName: '$_id',
+          totalQuantity: 1,
+          sellingPrice: 1,
+          _id: 0
+        }
+      },
+      { $sort: { productName: 1 } }
+    ]);
+    
+    const totalProducts = stockSummary.length;
+    const totalUnits = stockSummary.reduce((sum, item) => sum + item.totalQuantity, 0);
+    const lowStockCount = stockSummary.filter(item => item.totalQuantity < 10).length;
     
     // RESTOCK HISTORY
     const restockHistory = await Stock.find(stockQuery)
@@ -126,7 +144,7 @@ router.get('/reports', isAuthenticated, async (req, res) => {
       totalTransactions: totalTransactions,
       avgSale: avgSale.toLocaleString(),
       topProducts: topProducts,
-      stockItems: stockItems,
+      stockItems: stockSummary,
       totalProducts: totalProducts,
       totalUnits: totalUnits,
       lowStockCount: lowStockCount,

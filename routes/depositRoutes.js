@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Deposit = require('../model/Deposit');
-const { isAdmin } = require('../middleware/auth');
+const { isAdmin, isAuthenticated } = require('../middleware/auth');
 
 // GET - Deposit page (view all deposits)
-router.get('/deposit', isAdmin, async (req, res) => {
+router.get('/deposit', isAuthenticated, isAdmin, async (req, res) => {
   try {
     const deposit = await Deposit.find({}).sort({ createdAt: -1 });
     res.render('deposit', { deposit: deposit, user: req.user });
@@ -15,7 +15,7 @@ router.get('/deposit', isAdmin, async (req, res) => {
 });
 
 // POST - Add new deposit
-router.post('/deposit/add', isAdmin, async (req, res) => {
+router.post('/deposit/add', isAuthenticated, isAdmin, async (req, res) => {
   try {
     const { customerName, customerPhone, ninNumber, amount } = req.body;
     
@@ -37,7 +37,7 @@ router.post('/deposit/add', isAdmin, async (req, res) => {
 });
 
 // POST - Use deposit (deduct amount when customer takes goods)
-router.post('/deposit/use', isAdmin, async (req, res) => {
+router.post('/deposit/use', isAuthenticated, isAdmin, async (req, res) => {
   try {
     const { id, amount } = req.body;
     const deposit = await Deposit.findById(id);
@@ -52,10 +52,10 @@ router.post('/deposit/use', isAdmin, async (req, res) => {
       return res.redirect('/deposit?error=Insufficient balance');
     }
     
-    deposit.amountUsed += useAmount;
-    deposit.balance -= useAmount;
+    deposit.amountUsed = (deposit.amountUsed || 0) + useAmount;
+    deposit.balance = deposit.totalDeposited - deposit.amountUsed;
     
-    if (deposit.balance === 0) {
+    if (deposit.balance <= 0) {
       deposit.status = 'completed';
     }
     

@@ -10,6 +10,10 @@ const connectDb = require('./config/db')
 
 //Import user model
 const Registration = require('./model/Registration');
+
+
+
+
 const User = require('./model/User');
 const Sales = require('./model/Sales');  
 const Stock = require('./model/Stock');

@@ -121,11 +121,11 @@ nav.navbar.navbar-expand-lg
               each item in stockItems
                 tr
                   td= item.productName
-                  td= item.quantity
+                  td= item.totalQuantity
                   td
-                    if item.quantity <= 0
+                    if item.totalQuantity <= 0
                       span.badge.bg-danger Out of Stock
-                    else if item.quantity < 10
+                    else if item.totalQuantity < 10
                       span.badge.bg-warning.text-dark Low Stock
                     else
                       span.badge.bg-success In Stock

@@ -73,46 +73,28 @@ router.post('/add_stock', isManager, async (req, res) => {
       });
     }
 
-    // Check if product already exists
-    let existingProduct = await Stock.findOne({ productName: productName });
+    // ALWAYS CREATE A NEW RECORD (keep history)
+    const total = parseInt(quantity) * parseFloat(unitCost);
     
-    if (existingProduct) {
-      // Update existing product - add to quantity
-      existingProduct.quantity += parseInt(quantity);
-      existingProduct.unitCost = parseFloat(unitCost);
-      existingProduct.sellingPrice = parseFloat(sellingPrice);
-      existingProduct.supplierName = supplierName;
-      existingProduct.supplierPhone = supplierPhone;
-      existingProduct.factoryName = factoryName || existingProduct.factoryName;
-      existingProduct.paymentStatus = paymentStatus;
-      existingProduct.total = existingProduct.quantity * existingProduct.unitCost;
-      await existingProduct.save();
-      console.log('Stock updated:', existingProduct.productName, 'New quantity:', existingProduct.quantity);
-    } else {
-      // Calculate total cost for new product
-      const total = parseInt(quantity) * parseFloat(unitCost);
-      
-      // Create new stock record
-      const newProduct = new Stock({
-        category,
-        productType,
-        productName,
-        quantity: parseInt(quantity),
-        unitCost: parseFloat(unitCost),
-        sellingPrice: parseFloat(sellingPrice),
-        supplierName,
-        supplierPhone,
-        factoryName,
-        paymentStatus,
-        total
-      });
-      
-      await newProduct.save();
-      console.log('New stock added:', newProduct.productName);
-    }
+    const newProduct = new Stock({
+      category,
+      productType,
+      productName,
+      quantity: parseInt(quantity),
+      unitCost: parseFloat(unitCost),
+      sellingPrice: parseFloat(sellingPrice),
+      supplierName,
+      supplierPhone,
+      factoryName,
+      paymentStatus,
+      total,
+      date: new Date()
+    });
     
-    // Redirect to refresh the page (GET will fetch updated data)
-    res.redirect('/newsale?success=Sale completed');
+    await newProduct.save();
+    console.log('New stock entry added:', newProduct.productName);
+    
+    res.redirect('/add_stock?success=Stock added successfully');
     
   } catch (error) {
     console.error(error);
@@ -128,29 +110,45 @@ router.post('/add_stock', isManager, async (req, res) => {
   }
 });
 
-//GET EDIT PAGE
-router.get('/edit-price/:id', async(req,res)=>{
-  const stock = await Stock.findById(req.params.id);
-  res.render('edit-price', {stock: stock});
-});
-
-//the post route for editing
-router.post('/update-price', async(req,res)=>{
-  await Stock.findByIdAndUpdate(req.body.id, {sellingPrice: req.body.sellingPrice});
-  res.redirect('/add_stock');
-})
-
-
-//delete button route
-router.post('/delete-stock/:id', async(req,res)=>{
-  try{
-    await Stock.findByIdAndDelete(req.params.id);
-    res.redirect('/add_stock?success=Stock record deleted successfully');
-  }catch{
+// GET - Current stock page (shows total quantity per product)
+router.get('/current-stock', async (req, res) => {
+  try {
+    // Group by productName and sum quantities
+    const stockSummary = await Stock.aggregate([
+      {
+        $group: {
+          _id: '$productName',
+          totalQuantity: { $sum: '$quantity' },
+          sellingPrice: { $first: '$sellingPrice' }
+        }
+      },
+      {
+        $project: {
+          productName: '$_id',
+          totalQuantity: 1,
+          sellingPrice: 1,
+          _id: 0
+        }
+      },
+      { $sort: { productName: 1 } }
+    ]);
+    
+    res.render('current-stock', { stockSummary: stockSummary, user: req.user });
+  } catch (error) {
     console.error(error);
-    res.redirect('/add_stock?error=Failed to delet stock record')
+    res.render('current-stock', { stockSummary: [], user: req.user });
   }
 });
 
+// DELETE - Delete stock record
+router.get('/delete-stock/:id', isManager, async (req, res) => {
+  try {
+    await Stock.findByIdAndDelete(req.params.id);
+    res.redirect('/add_stock?success=Stock record deleted successfully');
+  } catch (error) {
+    console.error(error);
+    res.redirect('/add_stock?error=Failed to delete stock record');
+  }
+});
 
 module.exports = router;

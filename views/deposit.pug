@@ -30,20 +30,20 @@ nav.navbar.navbar-expand-lg
   .card.mb-4
     .card-header Register New Customer Deposit
     .card-body
-      form(action='/deposits/add' method='POST')
+      form(action='/deposit/add' method='POST')
         .row
           .col-md-3.mb-3
-            label.form-label Customer Name
-            input.form-control(type='text' name='customerName' required)
+            label.form-label(for='customerName') Customer Name
+            input#customerName.form-control(type='text' name='customerName' required)
           .col-md-3.mb-3
-            label.form-label Phone Number
-            input.form-control(type='tel' name='customerPhone' placeholder='+256712345678' required)
+            label.form-label(for='customerPhone') Phone Number
+            input#customerPhone.form-control(type='tel' name='customerPhone' placeholder='+256712345678' required)
           .col-md-3.mb-3
-            label.form-label NIN Number
-            input.form-control(type='text' name='ninNumber' required)
+            label.form-label(for='ninNumber') NIN Number
+            input#ninNumber.form-control(type='text' name='ninNumber' required)
           .col-md-3.mb-3
-            label.form-label Deposit Amount (UGX)
-            input.form-control(type='number' name='amount' required)
+            label.form-label(for='amount') Deposit Amount (UGX)
+            input#amount.form-control(type='number' name='amount' required)
           .col-md-12.mt-2
             button.btn.btn-gold(type='submit') Register Deposit
 
@@ -67,27 +67,24 @@ nav.navbar.navbar-expand-lg
               th Status
               th Action
           tbody
-            if deposits && deposits.length > 0
-              each deposit in deposits
+            if deposit && deposit.length > 0
+              each record in deposit
                 tr
-                  td= deposit.createdAt ? deposit.createdAt.toLocaleDateString() : 'N/A'
-                  td= deposit.customerName
-                  td= deposit.customerPhone
-                  td= deposit.ninNumber
-                  td= 'UGX ' + deposit.totalDeposited.toLocaleString()
-                  td= 'UGX ' + deposit.amountUsed.toLocaleString()
-                  td= 'UGX ' + deposit.balance.toLocaleString()
+                  td= record.createdAt ? record.createdAt.toLocaleDateString() : 'N/A'
+                  td= record.customerName
+                  td= record.customerPhone
+                  td= record.ninNumber
+                  td= 'UGX ' + record.totalDeposited.toLocaleString()
+                  td= 'UGX ' + (record.amountUsed || 0).toLocaleString()
+                  td= 'UGX ' + record.balance.toLocaleString()
                   td
-                    if deposit.status === 'active'
+                    if record.status === 'active'
                       span.badge.bg-success Active
                     else
                       span.badge.bg-secondary Completed
                   td
-                    form(action='/deposits/use' method='POST' style='display: inline-block;')
-                      input(type='hidden' name='id' value=deposit._id)
-                      input(type='number' name='amount' placeholder='Amount' style='width: 100px;' required)
-                      button.btn.btn-sm.btn-warning(type='submit') Use
-                    a.btn.btn-sm.btn-danger(href=`/deposits/delete/${deposit._id}` onclick='return confirm("Delete this deposit record?")') Delete
+                    button.btn.btn-sm.btn-warning(type='submit' formaction='/deposit/use' formmethod='POST' name='id' value=record._id) Use
+                    a.btn.btn-sm.btn-danger.ms-1(href=`/deposit/delete/${record._id}` onclick='return confirm("Delete this deposit record?")') Delete
             else
               tr
                 td(colspan='9', class='text-center text-muted') No deposit records yet
